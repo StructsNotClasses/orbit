@@ -7,4 +7,4 @@ class Object {
 		double m_a_x;
 		double m_a_y;
 		double mass;
-}
+};

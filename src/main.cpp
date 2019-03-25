@@ -1,5 +1,6 @@
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <assert.h>
 constexpr int SCREEN_WIDTH{640};
 constexpr int SCREEN_HEIGHT{800};
 
@@ -11,6 +12,11 @@ int main(int argc, char* args[]) {
 	SDL_Window* window = NULL;
 
 	SDL_Surface* screen = NULL;
+
+	SDL_Surface* screen_image = SDL_LoadBMP("~/Coding/C++/orbit/assets/ship.bmp");
+
+	assert(screen_image && "Image could not initialize");
+
 
  	if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) { 
 		std::cout <<  "SDL could not initialize! SDL_Error: %s\n" <<  SDL_GetError();
@@ -26,9 +32,7 @@ int main(int argc, char* args[]) {
 
 		else { 
 			//Get window surface 
-			screen = SDL_GetWindowSurface( window ); 
-			//Fill the surface white 
-			SDL_FillRect( screen, NULL, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) ); 
+			SDL_BlitSurface( screen_image, NULL, screen, NULL);
 			//Update the surface 
 			SDL_UpdateWindowSurface( window ); 
 			//Wait two seconds 
