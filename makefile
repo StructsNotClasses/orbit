@@ -2,7 +2,7 @@ CC=g++
 CFLAGS=-Wall -g -lSDL2
 INCLUDE= -I headers
 DEPS=object.h
-OBJ=src/main.cpp 
+OBJ=src/main.cpp src/capp.cpp
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
