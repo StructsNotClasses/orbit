@@ -11,8 +11,8 @@ class Game {
 		void update();
 		void quit();
 	
-	private:
 		SDL_Surface* screen{NULL};
+		SDL_Surface* test{NULL};
 		SDL_Window* game_window{NULL};
 };
 	

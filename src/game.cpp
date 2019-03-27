@@ -1,4 +1,5 @@
 #include "game.h" 
+#include "helpers.h"
 bool Game::init() {
 	if(SDL_Init(SDL_INIT_EVERYTHING) < 0) return false;
 	
@@ -10,7 +11,8 @@ bool Game::init() {
 
 	if(screen == NULL) return false;
 	
-	SDL_FillRect( screen, NULL, SDL_MapRGB( screen->format, 0xFF, 0xFF, 0xFF ) ); 
+	test = surfaceFromBMP("assets/rocket.bmp");
+	if(test == NULL) return false;
 
 	return true;
 }
@@ -23,11 +25,15 @@ bool Game::event(SDL_Event* event) {
 	if(event->type == SDL_QUIT)
 		return false;
 
+	//switch(event.key) {
+
 	return true;
 }
 	
 
 void Game::quit() {
 	SDL_DestroyWindow(game_window);
+	SDL_FreeSurface(screen);
+	SDL_FreeSurface(test);
 	SDL_Quit();
 }
