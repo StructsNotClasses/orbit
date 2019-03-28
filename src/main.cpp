@@ -23,6 +23,7 @@ int main(int argc, char* args[]) {
 	while(running) {
 		while(SDL_PollEvent(&lol)) {
 			running = main->event(&lol);
+			main->update();
 		}
 	}
 
