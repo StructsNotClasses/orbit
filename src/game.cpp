@@ -1,3 +1,4 @@
+#include <iostream>
 #include "game.h" 
 #include "helpers.h"
 bool Game::init() {
@@ -13,6 +14,8 @@ bool Game::init() {
 	
 	test = surfaceFromBMP("assets/rocket.bmp");
 	if(test == NULL) return false;
+
+	if(!drawToSurface(screen, test, 0, 0)) return false;
 
 	return true;
 }
@@ -32,8 +35,8 @@ bool Game::event(SDL_Event* event) {
 	
 
 void Game::quit() {
-	SDL_DestroyWindow(game_window);
 	SDL_FreeSurface(screen);
 	SDL_FreeSurface(test);
+	SDL_DestroyWindow(game_window);
 	SDL_Quit();
 }

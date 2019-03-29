@@ -26,10 +26,11 @@ int main(int argc, char* args[]) {
 		}
 	}
 
-	std::cout << "Program exited successfully\n";
 	
 	main->quit();
+	std::cout << "Program exited successfully\n";
 	delete main;
+	
 
 	return 0;  
 }
