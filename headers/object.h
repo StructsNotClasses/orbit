@@ -1,5 +1,8 @@
+#pragma once
+#include <SDL2/SDL.h>
 class Object {
 	public:
+		SDL_Surface* m_surface;
 
 	private:
 		double m_v_x;

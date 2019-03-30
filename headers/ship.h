@@ -1,8 +1,8 @@
 #include "object.h"
 
-class Player : private Object {
+class Player : public Object {
 	public:
-		Player(); 
+		Player(const char* image_file); 
 
 		void update();
 };
