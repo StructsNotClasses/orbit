@@ -23,8 +23,10 @@ int main(int argc, char* args[]) {
 	while(running) {
 		while(SDL_PollEvent(&lol)) {
 			running = main->event(&lol);
-			main->update();
+			//improve the key system so that keydown and keyup events are accounted for; smooth movement
 		}
+		main->update();
+		SDL_Delay(50);
 	}
 
 	

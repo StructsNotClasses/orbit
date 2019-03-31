@@ -14,19 +14,7 @@ SDL_Surface* surfaceFromBMP(const char* file) {
 	return return_surface;
 }
 
-bool drawToSurface(SDL_Surface* destination, SDL_Surface* source, int x, int y) {
-	if(destination == NULL || source == NULL) return false;
-
-	SDL_Rect destination_rect;
-	destination_rect.x = x;
-	destination_rect.y = y;
-
-	SDL_BlitSurface(source, NULL, destination, &destination_rect);
-
-	return true;
-}
-
-bool drawToSurface(SDL_Surface* destination, SDL_Surface* source, int dx, int dy, int sx, int sy, int w, int h) {
+bool drawToRenderer(SDL_Renderer* destination, SDL_Texture* source, int dx, int dy, int sx, int sy, int w, int h) {
 	if(destination == NULL || source == NULL) return false;
 
 	SDL_Rect destination_rect;
@@ -40,7 +28,8 @@ bool drawToSurface(SDL_Surface* destination, SDL_Surface* source, int dx, int dy
 	source_rect.w = w;
 	source_rect.h = h;
 
-	SDL_BlitSurface(source, &source_rect, destination, &destination_rect);
+	SDL_RenderCopy(destination, source, &source_rect, &destination_rect);
+
 	return true;
 }
 
