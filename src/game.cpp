@@ -17,27 +17,25 @@ bool Game::init() {
 	SDL_RenderPresent(renderer);
 
 	//create player
-	player = new Player("assets/rocket.bmp", 960, 540, renderer);
+	player = new Player("assets/rocket.bmp", 10, 10, renderer);
 
 	//create the player texture
-	test = SDL_CreateTextureFromSurface(renderer, surfaceFromBMP("assets/rocket.bmp"));
-	if(test == NULL) return false;
+	//test = SDL_CreateTextureFromSurface(renderer, surfaceFromBMP("assets/rocket.bmp"));
+	//if(test == NULL) return false;
 
 	//create the rect that controlles the player rendering location and size
-	dstrect = new SDL_Rect;
-	dstrect->x = x;
-	dstrect->y = y;
-	dstrect->w = 35;
-	dstrect->h = 35;
+	//dstrect = new SDL_Rect;
+	//dstrect->x = x;
+	//dstrect->y = y;
+	//dstrect->w = 35;
+	//dstrect->h = 35;
 
 	return true;
 }
 
 void Game::update() {
-	x+=vx;
-	y+=vy;
-	dstrect->x = x;
-	dstrect->y = y;
+	//change player accelerations
+	player->update();
 
 	//clear the window
 	if(SDL_RenderClear(renderer)) std::cout << SDL_GetError();
@@ -45,7 +43,8 @@ void Game::update() {
 	//background image
 	
 	//rendercopy the player
-	SDL_RenderCopy(renderer, test, NULL, dstrect);
+	//SDL_RenderCopy(renderer, player->m_texture, NULL, player->m_dstrect);
+	player->render(renderer);
 
 	//render the changes
 	SDL_RenderPresent(renderer);
@@ -88,10 +87,10 @@ bool Game::event(SDL_Event* event) {
 			}
 			break;
 	}
-	if(w_pressed) vy-=.25;
-	if(s_pressed) vy+=.25;
-	if(a_pressed) vx-=.25;
-	if(d_pressed) vx+=.25;
+	if(w_pressed) player->accelerate(0, -.25);
+	if(s_pressed) player->accelerate(0, .25);
+	if(a_pressed) player->accelerate(-.25, 0);
+	if(d_pressed) player->accelerate(.25, 0);
 	return true;
 }
 	

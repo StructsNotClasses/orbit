@@ -1,8 +1,8 @@
 CC=g++
 CFLAGS=-Wall -g -lSDL2
 INCLUDE= -I headers
-DEPS=object.h input.h game.h helpers.h player.h
-OBJ=src/main.cpp src/game.cpp src/helpers.cpp src/player.cpp 
+DEPS=object.h input.h game.h helpers.h player.h object.h
+OBJ=src/main.cpp src/game.cpp src/helpers.cpp src/player.cpp src/object.cpp
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)

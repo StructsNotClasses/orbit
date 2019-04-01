@@ -14,6 +14,7 @@ SDL_Surface* surfaceFromBMP(const char* file) {
 	return return_surface;
 }
 
+//rendercopies and handles rectangles, probably outdated or something but eh
 bool drawToRenderer(SDL_Renderer* destination, SDL_Texture* source, int dx, int dy, int sx, int sy, int w, int h) {
 	if(destination == NULL || source == NULL) return false;
 
@@ -33,4 +34,10 @@ bool drawToRenderer(SDL_Renderer* destination, SDL_Texture* source, int dx, int 
 	return true;
 }
 
-
+//wraps location of object "o" based on screen size "s"
+void wrap(int s_x, int s_y, double *o_x, double *o_y) {
+	if(*o_x >= s_x) *o_x -= s_x;
+	if(*o_x <= 0) *o_x += s_x;
+	if(*o_y >= s_y) *o_y -= s_y;
+	if(*o_y <= 0) *o_y += s_y;
+}

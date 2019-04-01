@@ -6,6 +6,8 @@ class Player : public Object {
 
 		void update();
 
+		void accelerate(double x, double y);
+
 		void render(SDL_Renderer* renderer);
 };
 

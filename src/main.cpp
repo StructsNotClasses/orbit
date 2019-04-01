@@ -18,12 +18,14 @@ int main(int argc, char* args[]) {
 
 	SDL_Delay( 2000 ); 
 
-	SDL_Event lol;
+	assert(main->player && "player uninitialized");
+
+	//read input and change values based on it
+	SDL_Event event;
 	bool running{1};
 	while(running) {
-		while(SDL_PollEvent(&lol)) {
-			running = main->event(&lol);
-			//improve the key system so that keydown and keyup events are accounted for; smooth movement
+		while(SDL_PollEvent(&event)) {
+			running = main->event(&event);
 		}
 		main->update();
 		SDL_Delay(50);
