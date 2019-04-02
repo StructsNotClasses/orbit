@@ -9,5 +9,7 @@ class Player : public Object {
 		void accelerate(double x, double y);
 
 		void render(SDL_Renderer* renderer);
+
+		SDL_Rect* m_srcrect{NULL};
 };
 

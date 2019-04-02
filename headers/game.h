@@ -1,5 +1,6 @@
 #pragma once
 #include "player.h"
+#include "star.h"
 #include <SDL2/SDL.h>
 
 class Game {
@@ -18,6 +19,7 @@ class Game {
 		SDL_Renderer* renderer{NULL};
 
 		Player* player{nullptr};
+		Star* star{nullptr};
 	private:
 
 		bool w_pressed{0};

@@ -2,9 +2,13 @@
 #include "player.h"
 #include "helpers.h"
 Player::Player(const char* image_file, int x, int y, SDL_Renderer* renderer, double mass, double g_x, double g_y) 
-		: Object(image_file, x, y, mass, renderer) {
-	m_dstrect->w = 35;
-	m_dstrect->h = 35;
+		: Object(image_file, x, y, mass, renderer), m_srcrect{new SDL_Rect} {
+	m_srcrect->w = 6;
+	m_srcrect->h = 10;
+	m_srcrect->x = 11;
+	m_srcrect->y = 3;
+	m_dstrect->w = 10;
+	m_dstrect->h = 20;
 	m_dstrect->x = m_x;
 	m_dstrect->y = m_y;
 	m_a_x = g_x;
@@ -27,7 +31,7 @@ void Player::accelerate(double x, double y) {
 }
 
 void Player::render(SDL_Renderer* renderer) {
-	SDL_RenderCopy(renderer, m_texture, NULL, m_dstrect);
+	SDL_RenderCopy(renderer, m_texture, m_srcrect, m_dstrect);
 }
 
 //void Player::render(SDL_Surface* screen) {

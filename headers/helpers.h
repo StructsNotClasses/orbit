@@ -7,3 +7,5 @@ bool drawToRenderer(SDL_Renderer* destination, SDL_Texture* source, int dx, int 
 void wrap(int s_x, int s_y, double *o_x, double *o_y);
 
 double distance(double fx, double fy, double sx, double sy);
+
+double gravitationalForce(double distance, double m1, double m2);

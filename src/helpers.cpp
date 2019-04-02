@@ -48,3 +48,9 @@ void wrap(int s_x, int s_y, double *o_x, double *o_y) {
 double distance(double fx, double fy, double sx, double sy) {
 	return sqrt(pow(sx-fx, 2) + pow(sy-fy, 2));
 }
+
+//returns the Fg between two objects, divide by mass to find object acceleration
+double gravitationalForce(double distance, double m1, double m2) {
+	return (m1 * m2) / pow(distance, 2);
+}
+

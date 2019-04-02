@@ -17,7 +17,10 @@ bool Game::init(double g_x, double g_y) {
 	SDL_RenderPresent(renderer);
 
 	//create player
-	player = new Player("assets/rocket.bmp", 300-17, 240-17, renderer, g_x, g_y);
+	player = new Player("assets/rocket.bmp", 320-17, 240-17, renderer, g_x, g_y);
+
+	//create sun
+	star = new Star("assets/sun.bmp", "assets/sun2.bmp", 303, 223, renderer, 1000);
 
 	//create the player texture
 	//test = SDL_CreateTextureFromSurface(renderer, surfaceFromBMP("assets/rocket.bmp"));
@@ -34,6 +37,9 @@ bool Game::init(double g_x, double g_y) {
 }
 
 void Game::update() {
+	//animate sun
+	star->update();
+
 	//change player accelerations
 	player->update();
 
@@ -41,9 +47,11 @@ void Game::update() {
 	if(SDL_RenderClear(renderer)) std::cout << SDL_GetError();
 
 	//background image
+	//
+	//rendercopy the star
+	star->render(renderer);
 	
 	//rendercopy the player
-	//SDL_RenderCopy(renderer, player->m_texture, NULL, player->m_dstrect);
 	player->render(renderer);
 
 	//render the changes
