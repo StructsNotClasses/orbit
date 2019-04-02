@@ -7,7 +7,7 @@ class Game {
 		//Game();
 		//~Game();
 	public:
-		bool init();
+		bool init(double g_x=0, double g_y=0);
 		bool event(SDL_Event* event);
 		void update();
 		void quit();
@@ -19,10 +19,6 @@ class Game {
 
 		Player* player{nullptr};
 	private:
-		int x{20};
-		int y{50};
-		double vx;
-		double vy;
 
 		bool w_pressed{0};
 		bool s_pressed{0};

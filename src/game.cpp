@@ -1,7 +1,7 @@
 #include <iostream>
 #include "game.h" 
 #include "helpers.h"
-bool Game::init() {
+bool Game::init(double g_x, double g_y) {
 	if(SDL_Init(SDL_INIT_EVERYTHING) < 0) return false;
 	
 	//create main window
@@ -17,7 +17,7 @@ bool Game::init() {
 	SDL_RenderPresent(renderer);
 
 	//create player
-	player = new Player("assets/rocket.bmp", 10, 10, renderer);
+	player = new Player("assets/rocket.bmp", 300-17, 240-17, renderer, g_x, g_y);
 
 	//create the player texture
 	//test = SDL_CreateTextureFromSurface(renderer, surfaceFromBMP("assets/rocket.bmp"));
@@ -58,16 +58,16 @@ bool Game::event(SDL_Event* event) {
 			std::cout << SDL_GetKeyName(event->key.keysym.sym) << " was pressed\n";
 			switch(event->key.keysym.sym) {
 				case SDLK_w: 
-					if(!w_pressed) w_pressed = 1;
+					w_pressed = 1;
 					break;
 			 	case SDLK_s: 
-					if(!s_pressed) s_pressed = 1;
+					s_pressed = 1;
 					break;
 				case SDLK_a:
-					if(!a_pressed) a_pressed = 1;
+					a_pressed = 1;
 					break;
 				case SDLK_d:
-					if(!d_pressed) d_pressed = 1;
+					d_pressed = 1;
 					break;
 			}
 			break;
@@ -75,15 +75,17 @@ bool Game::event(SDL_Event* event) {
 			std::cout << SDL_GetKeyName(event->key.keysym.sym) << " was released lol\n";
 			switch(event->key.keysym.sym) {
 				case SDLK_w:
-					if(w_pressed) w_pressed=0;
+					w_pressed=0;
 					break;
 				case SDLK_s:
-					if(s_pressed) s_pressed=0;
+					s_pressed=0;
 					break;
 				case SDLK_a:
-					if(a_pressed) a_pressed=0;
+					a_pressed=0;
+					break;
 				case SDLK_d:
-					if(d_pressed) d_pressed=0;
+					d_pressed=0;
+					break;
 			}
 			break;
 	}
