@@ -2,8 +2,10 @@
 #include <SDL2/SDL.h>
 class Object {
 	public:
-		SDL_Surface* m_surface;
-		SDL_Texture* m_texture;
+		Object(const char* image_file, int x, int y, SDL_Renderer* renderer);
+		SDL_Surface* m_surface{NULL}; 
+		SDL_Texture* m_texture{NULL};
+		SDL_Rect* m_dstrect{NULL};
 
 	protected:
 		double m_x;

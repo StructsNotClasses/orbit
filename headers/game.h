@@ -1,4 +1,5 @@
 #pragma once
+#include "player.h"
 #include <SDL2/SDL.h>
 
 class Game {
@@ -11,17 +12,17 @@ class Game {
 		void update();
 		void quit();
 	
-		SDL_Surface* screen{NULL};
 		SDL_Texture* test{NULL};
 		SDL_Rect* dstrect{nullptr};
 		SDL_Window* game_window{NULL};
 		SDL_Renderer* renderer{NULL};
+
+		Player* player{nullptr};
 	private:
-		bool tes{1};
 		int x{20};
 		int y{50};
-		int vx;
-		int vy;
+		double vx;
+		double vy;
 
 		bool w_pressed{0};
 		bool s_pressed{0};

@@ -6,6 +6,6 @@ class Player : public Object {
 
 		void update();
 
-		void render(SDL_Surface* screen);
+		void render(SDL_Renderer* renderer);
 };
 
