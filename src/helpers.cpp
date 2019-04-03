@@ -36,7 +36,7 @@ bool drawToRenderer(SDL_Renderer* destination, SDL_Texture* source, int dx, int 
 }
 
 //wraps location of object "o" based on screen size "s"
-constexpr int half_width = 17;
+constexpr int half_width = 1;
 void wrap(int s_x, int s_y, double *o_x, double *o_y) {
 	if(*o_x < -2 * half_width) *o_x = s_x;
 	if(*o_x > s_x) *o_x = -2 * half_width;
@@ -44,13 +44,14 @@ void wrap(int s_x, int s_y, double *o_x, double *o_y) {
 	if(*o_y > s_y) *o_y = -2 * half_width;
 }
 
-//returns the distance between two objects
+//returns the distance between two objects, may not need this for a while
 double distance(double fx, double fy, double sx, double sy) {
 	return sqrt(pow(sx-fx, 2) + pow(sy-fy, 2));
 }
 
-//returns the Fg between two objects, divide by mass to find object acceleration
-double gravitationalForce(double distance, double m1, double m2) {
-	return (m1 * m2) / pow(distance, 2);
+//returns the acceleration upon a single object by another
+//takes locations and masses of both as well as a g-constant 
+double* gravitationalAcceleration(double x1, double y1, double x2, double y2, double m1, double m2, const double g) {
+	return new double[2]{m1/((g*m1*m2)/pow(x2-x1, 2)), (g*m1*m2)/pow(y2-y1, 2)};
 }
 

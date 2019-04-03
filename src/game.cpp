@@ -19,7 +19,7 @@ bool Game::init(double g_x, double g_y) {
 	//create player
 	player = new Player("assets/rocket.bmp", 320-17, 240-17, renderer, g_x, g_y);
 
-	//create sun
+	//create star
 	star = new Star("assets/sun.bmp", "assets/sun2.bmp", 303, 223, renderer, 1000);
 
 	//create the player texture
@@ -41,6 +41,8 @@ void Game::update() {
 	star->update();
 
 	//change player accelerations
+	tmp = gravitationalAcceleration(player->getx(), player->gety(), star->getx(), star->gety(), .00000000000000001, .000000000001, 0.00000001);
+	player->accelerate(tmp[0], tmp[1]);
 	player->update();
 
 	//clear the window

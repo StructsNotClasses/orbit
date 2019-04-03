@@ -20,6 +20,7 @@ class Game {
 
 		Player* player{nullptr};
 		Star* star{nullptr};
+		double* tmp;
 	private:
 
 		bool w_pressed{0};

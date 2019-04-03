@@ -6,6 +6,8 @@ class Object {
 		SDL_Surface* m_surface{NULL}; 
 		SDL_Texture* m_texture{NULL};
 		SDL_Rect* m_dstrect{NULL};
+		double getx() {return m_x;}
+		double gety() {return m_y;}
 
 	protected:
 		double m_x;
