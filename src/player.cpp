@@ -18,6 +18,7 @@ Player::Player(const char* image_file, int x, int y, SDL_Renderer* renderer, dou
 }
 
 void Player::update() {
+	m_v_x += m_a_x;
 	m_v_y += m_a_y;
 	m_x += m_v_x;
 	m_y += m_v_y;
@@ -28,9 +29,14 @@ void Player::update() {
 
 void Player::accelerate(double x, double y) {
 	if(x == std::numeric_limits<double>::infinity()) x = 0;
+	if(x == -1 * std::numeric_limits<double>::infinity()) x = 0;
 	if(y == std::numeric_limits<double>::infinity()) y = 0;
+	if(y == -1 * std::numeric_limits<double>::infinity()) y = 0;
+	std::cout << "x a: " << x << "y a: " << y << '\n';
 	m_v_x += x;
+	std::cout << m_v_x << " ";
 	m_v_y += y;
+	std::cout << m_v_y << '\n';
 }
 
 void Player::render(SDL_Renderer* renderer) {

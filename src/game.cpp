@@ -41,8 +41,8 @@ void Game::update() {
 	star->update();
 
 	//change player accelerations
-	tmp = gravitationalAcceleration(player->getx(), player->gety(), star->getx(), star->gety(), .00000000000000001, .000000000001, 0.00000001);
-	player->accelerate(tmp[0], tmp[1]);
+	tmp = gravitationalAcceleration(player->getx(), player->gety(), star->getx(), star->gety(), 1, 1, 1);
+	player->accelerate(-1*tmp[0], tmp[1]);
 	player->update();
 
 	//clear the window
