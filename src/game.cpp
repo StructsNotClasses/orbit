@@ -5,7 +5,7 @@ bool Game::init(double g_x, double g_y) {
 	if(SDL_Init(SDL_INIT_EVERYTHING) < 0) return false;
 	
 	//create main window
-	game_window = SDL_CreateWindow("yow", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_SHOWN );
+	game_window = SDL_CreateWindow("yow", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 
 	if(game_window == NULL) return false;
 
@@ -17,10 +17,10 @@ bool Game::init(double g_x, double g_y) {
 	SDL_RenderPresent(renderer);
 
 	//create player
-	player = new Player("assets/rocket.bmp", 320-17, 240-17, renderer, g_x, g_y);
+	player = new Player("assets/rocket.bmp", (SCREEN_WIDTH/2), (SCREEN_HEIGHT/2-400), renderer, g_x, g_y);
 
 	//create star
-	star = new Star("assets/sun.bmp", "assets/sun2.bmp", 303, 223, renderer, 1000);
+	star = new Star("assets/sun.bmp", "assets/sun2.bmp", (SCREEN_WIDTH/2), (SCREEN_HEIGHT/2), renderer, 1000);
 
 	//create the player texture
 	//test = SDL_CreateTextureFromSurface(renderer, surfaceFromBMP("assets/rocket.bmp"));
@@ -41,8 +41,10 @@ void Game::update() {
 	star->update();
 
 	//change player accelerations
-	tmp = gravitationalAcceleration(player->getx(), player->gety(), star->getx(), star->gety(), 1, 1, 1);
-	player->accelerate(-1*tmp[0], tmp[1]);
+	std::cout << "Star: (" << star->getx() << ", " << star->gety() << ")\n";
+	std::cout << "Player: (" << player->getx() + 5 << ", " << player->gety() + 3 << ")\n";
+	tmp = gravitationalAcceleration(star->getx(), star->gety(), player->getx()+5, player->gety()+3, 10000, 1, 1);
+	player->accelerate(tmp[0], tmp[1]);
 	player->update();
 
 	//clear the window

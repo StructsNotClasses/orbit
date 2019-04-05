@@ -2,7 +2,8 @@
 #include "player.h"
 #include "star.h"
 #include <SDL2/SDL.h>
-
+constexpr int SCREEN_WIDTH{1920};
+constexpr int SCREEN_HEIGHT{1920};
 class Game {
 	public:
 		//Game();
@@ -20,7 +21,7 @@ class Game {
 
 		Player* player{nullptr};
 		Star* star{nullptr};
-		double* tmp;
+		double* tmp{nullptr};
 	private:
 
 		bool w_pressed{0};

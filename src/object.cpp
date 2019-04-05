@@ -9,5 +9,7 @@ Object::Object(const char* image_file, int x, int y, double mass, SDL_Renderer* 
 	assert(m_texture && "couldn't create texture");
 	m_dstrect = new SDL_Rect();
 	assert(m_dstrect && "couldn't create dstrect");
+	m_v_x=0;
+	m_v_y=0;
 }
 

@@ -4,8 +4,6 @@
 #include <limits>
 #include "game.h"
 #include "helpers.h"
-constexpr int SCREEN_WIDTH{640};
-constexpr int SCREEN_HEIGHT{480};
 
 void updateObjects() {
 }

@@ -1,6 +1,7 @@
 #include "object.h"
 #include "player.h"
 #include "helpers.h"
+#include "game.h"
 #include <iostream>
 #include <limits>
 Player::Player(const char* image_file, int x, int y, SDL_Renderer* renderer, double mass, double g_x, double g_y) 
@@ -22,7 +23,7 @@ void Player::update() {
 	m_v_y += m_a_y;
 	m_x += m_v_x;
 	m_y += m_v_y;
-	wrap(640, 480, &m_x, &m_y);
+	wrap(SCREEN_WIDTH, SCREEN_HEIGHT, &m_x, &m_y);
 	m_dstrect->x = m_x;
 	m_dstrect->y = m_y;
 }
@@ -32,7 +33,7 @@ void Player::accelerate(double x, double y) {
 	if(x == -1 * std::numeric_limits<double>::infinity()) x = 0;
 	if(y == std::numeric_limits<double>::infinity()) y = 0;
 	if(y == -1 * std::numeric_limits<double>::infinity()) y = 0;
-	std::cout << "x a: " << x << "y a: " << y << '\n';
+	std::cout << "x acc: " << x << "\ny acc: " << y << '\n';
 	m_v_x += x;
 	std::cout << m_v_x << " ";
 	m_v_y += y;

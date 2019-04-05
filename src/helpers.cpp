@@ -2,6 +2,9 @@
 #include <assert.h>
 #include <cmath>
 #include <iostream>
+
+#define yeet assert(!(quadrent==-1) && "Something is very wrong, perhaps a coordinate is null or something");
+
 SDL_Surface* surfaceFromBMP(const char* file) {
 	SDL_Surface* return_surface{NULL};
 	SDL_Surface* tmp_surface{NULL};
@@ -59,7 +62,7 @@ double gravitationalForce(double m1, double m2, double distance, const double g)
 //takes locations and masses of both as well as a g-constant 
 double* gravitationalAcceleration(double x1, double y1, double x2, double y2, double m1, double m2, const double g) {
 	//calc force
-	double force = gravitationalForce(m1, m2, distance(x1, x2, y1, y2), g);
+	const double &force = gravitationalForce(m1, m2, distance(x1, y1, x2, y2), g);
 
 	//determine quadrant
 	int quadrent{-1};
@@ -67,18 +70,27 @@ double* gravitationalAcceleration(double x1, double y1, double x2, double y2, do
 	if((x2>x1) && (y2>=y1)) quadrent = 2;
 	if((x2<=x1) && (y2>y1)) quadrent = 3;
 	if((x2<x1) && (y2<=y1)) quadrent = 4;
-	assert(!(quadrent==-1) && "Something is very wrong, perhaps a coordinate is null or something");
+	if(quadrent==-1) return new double[2] {0,0};
 
 	//calc angle, the resulting angle is in radians and is from the distance line to the nearest axis in the counterclockwise direction
 	//after angle calculated, use it to split the gravitational force into x and y components
-	double angle{-361};
+	//returns a double* with x as first index and y as second index
+	double angle{0};
 	switch(quadrent) {
 		case 1: 
 			angle=(atan((x2-x1)/(y1-y2))); 
-			break;
-		case 2: angle=(atan((y2-y1)/(x2-x1))); break;
-		case 3: angle=(atan((x1-x2)/(y1-y2))); break;
-		case 4: angle=(atan((y1-y2)/(x1-x2))); break;
+			return new double[2] {-1*(sin(angle)*force),cos(angle)*force};
+		case 2: 
+			angle=(atan((y2-y1)/(x2-x1))); 
+			return new double[2] {-1*(cos(angle)*force),-1*(sin(angle)*force)};
+		case 3: 
+			angle=(atan((x2-x1)/(y1-y2))); 
+			return new double[2] {sin(angle)*force,-1*(cos(angle)*force)};
+		case 4: 
+			angle=(atan((y1-y2)/(x1-x2))); 
+			return new double[2] {cos(angle)*force,sin(angle)*force};
+		default:
+			yeet
+			return 0;
 	}
-
 }
