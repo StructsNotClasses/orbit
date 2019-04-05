@@ -33,11 +33,11 @@ void Player::accelerate(double x, double y) {
 	if(x == -1 * std::numeric_limits<double>::infinity()) x = 0;
 	if(y == std::numeric_limits<double>::infinity()) y = 0;
 	if(y == -1 * std::numeric_limits<double>::infinity()) y = 0;
-	std::cout << "x acc: " << x << "\ny acc: " << y << '\n';
+	//std::cout << "x acc: " << x << "\ny acc: " << y << '\n';
 	m_v_x += x;
-	std::cout << m_v_x << " ";
+	//std::cout << m_v_x << " ";
 	m_v_y += y;
-	std::cout << m_v_y << '\n';
+	//std::cout << m_v_y << '\n';
 }
 
 void Player::render(SDL_Renderer* renderer) {

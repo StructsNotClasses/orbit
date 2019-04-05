@@ -41,8 +41,8 @@ void Game::update() {
 	star->update();
 
 	//change player accelerations
-	std::cout << "Star: (" << star->getx() << ", " << star->gety() << ")\n";
-	std::cout << "Player: (" << player->getx() + 5 << ", " << player->gety() + 3 << ")\n";
+	//std::cout << "Star: (" << star->getx() << ", " << star->gety() << ")\n";
+	//std::cout << "Player: (" << player->getx() + 5 << ", " << player->gety() + 3 << ")\n";
 	tmp = gravitationalAcceleration(star->getx(), star->gety(), player->getx()+5, player->gety()+3, 10000, 1, 1);
 	player->accelerate(tmp[0], tmp[1]);
 	player->update();
