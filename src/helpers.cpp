@@ -53,16 +53,16 @@ double distance(double fx, double fy, double sx, double sy) {
 	return sqrt(pow(sx-fx, 2) + pow(sy-fy, 2));
 }
 
-//returns the force of gravity between two objects
+//returns the force of gravity between two objects 
 double gravitationalForce(double m1, double m2, double distance, const double g) {
 	return (m1*m2*g) / pow(distance, 2);
 }
 
 //returns the acceleration upon a single object by another
-//takes locations and masses of both as well as a g-constant 
+//takes locations and masses of both as well as a g-constant, 1 is the object pulling 2
 double* gravitationalAcceleration(double x1, double y1, double x2, double y2, double m1, double m2, const double g) {
 	//calc force
-	const double &force = gravitationalForce(m1, m2, distance(x1, y1, x2, y2), g);
+	const double &force = gravitationalForce(m1, m2, distance(x1, y1, x2, y2), g)/m2;
 
 	//determine quadrant
 	int quadrent{-1};

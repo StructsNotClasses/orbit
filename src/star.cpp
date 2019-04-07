@@ -13,6 +13,8 @@ Star::Star(const char* image_file, const char* image_file2, int x, int y, SDL_Re
 	m_texture2 = SDL_CreateTextureFromSurface(renderer, tmpsurf);
 	assert(m_texture2 && "couldn't create texture");
 
+  m_m = 1000;
+
 	SDL_FreeSurface(tmpsurf);
 }
 	

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <assert.h>
 #include "game.h" 
 #include "helpers.h"
 bool Game::init(double g_x, double g_y) {
@@ -17,10 +18,14 @@ bool Game::init(double g_x, double g_y) {
 	SDL_RenderPresent(renderer);
 
 	//create player
-	player = new Player("assets/rocket.bmp", (SCREEN_WIDTH/2), (SCREEN_HEIGHT/2-400), renderer, g_x, g_y);
+	player = new Player("assets/rocket.bmp", (SCREEN_WIDTH/2), (SCREEN_HEIGHT/2-400), renderer, 1, g_x, g_y);
 
 	//create star
-	star = new Star("assets/sun.bmp", "assets/sun2.bmp", (SCREEN_WIDTH/2), (SCREEN_HEIGHT/2), renderer, 1000);
+	star = new Star("assets/sun.bmp", "assets/sun2.bmp", (SCREEN_WIDTH/2), (SCREEN_HEIGHT/2), renderer, 10000);
+
+  //create planets
+  planets.push_back(new Planet(BARREN_ROCK, 550, SCREEN_HEIGHT/2, renderer, 100, 0, 5));
+  assert(planets[0]&&"couldn't create planet 1");
 
 	//create the player texture
 	//test = SDL_CreateTextureFromSurface(renderer, surfaceFromBMP("assets/rocket.bmp"));
@@ -40,11 +45,22 @@ void Game::update() {
 	//animate sun
 	star->update();
 
-	//change player accelerations
+  //update planets
+  for(Planet* current_planet : planets) {
+    current_planet->pullTowardsObject(star, 10);
+    current_planet->pullTowardsObject(player,10);
+    current_planet->update();
+  }
+
 	//std::cout << "Star: (" << star->getx() << ", " << star->gety() << ")\n";
+  //std::cout << "Planet(0): (" << (planets[0])->getx() << ", " << (planets[0])->gety() << ")\n"; 
 	//std::cout << "Player: (" << player->getx() + 5 << ", " << player->gety() + 3 << ")\n";
-	tmp = gravitationalAcceleration(star->getx(), star->gety(), player->getx()+5, player->gety()+3, 10000, 1, 1);
-	player->accelerate(tmp[0], tmp[1]);
+
+  //update player
+  player->pullTowardsObject(star, 10);
+  for(Planet* current_planet : planets) {
+    player->pullTowardsObject(current_planet, 10);
+  }
 	player->update();
 
 	//clear the window
@@ -54,7 +70,12 @@ void Game::update() {
 	//
 	//rendercopy the star
 	star->render(renderer);
-	
+
+  //rendercopy the planets
+  for(Planet* current_planet : planets) {
+    current_planet->render(renderer);
+  }
+
 	//rendercopy the player
 	player->render(renderer);
 
@@ -69,10 +90,10 @@ bool Game::event(SDL_Event* event) {
 		case SDL_KEYDOWN:
 			std::cout << SDL_GetKeyName(event->key.keysym.sym) << " was pressed\n";
 			switch(event->key.keysym.sym) {
-				case SDLK_w: 
+				case SDLK_w:
 					w_pressed = 1;
 					break;
-			 	case SDLK_s: 
+			 	case SDLK_s:
 					s_pressed = 1;
 					break;
 				case SDLK_a:

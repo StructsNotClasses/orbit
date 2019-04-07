@@ -40,6 +40,7 @@ void Player::accelerate(double x, double y) {
 	//std::cout << m_v_y << '\n';
 }
 
+
 void Player::render(SDL_Renderer* renderer) {
 	SDL_RenderCopy(renderer, m_texture, m_srcrect, m_dstrect);
 }

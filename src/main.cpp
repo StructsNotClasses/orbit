@@ -23,7 +23,7 @@ int main(int argc, char* args[]) {
 
 	main->update();
 
-	SDL_Delay( 2000 ); 
+	SDL_Delay( 2000 );
 
 	assert(main->player && "player uninitialized");
 
@@ -38,11 +38,11 @@ int main(int argc, char* args[]) {
 		SDL_Delay(50);
 	}
 
-	
+
 	main->quit();
 	std::cout << "Program exited successfully\n";
 	delete main;
-	
 
-	return 0;  
+
+	return 0;
 }

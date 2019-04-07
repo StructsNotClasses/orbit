@@ -1,9 +1,12 @@
 #pragma once
+#include <SDL2/SDL.h>
+#include <vector>
 #include "player.h"
 #include "star.h"
-#include <SDL2/SDL.h>
-constexpr int SCREEN_WIDTH{1920};
-constexpr int SCREEN_HEIGHT{1920};
+#include "planet.h"
+#include "object.h"
+#include "variables.h"
+
 class Game {
 	public:
 		//Game();
@@ -13,7 +16,7 @@ class Game {
 		bool event(SDL_Event* event);
 		void update();
 		void quit();
-	
+
 		SDL_Texture* test{NULL};
 		SDL_Rect* dstrect{nullptr};
 		SDL_Window* game_window{NULL};
@@ -21,7 +24,8 @@ class Game {
 
 		Player* player{nullptr};
 		Star* star{nullptr};
-		double* tmp{nullptr};
+    std::vector<Planet*> planets;
+
 	private:
 
 		bool w_pressed{0};
@@ -29,4 +33,4 @@ class Game {
 		bool a_pressed{0};
 		bool d_pressed{0};
 };
-	
+
