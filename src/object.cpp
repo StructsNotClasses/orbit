@@ -14,6 +14,34 @@ Object::Object(const char* image_file, int x, int y, double mass, SDL_Renderer* 
 	m_v_y=0;
 }
 
+Object::Object(const char* image_file, double star_centerx, double star_centery, double angle, double mass, double g, double period, SDL_Renderer* renderer)
+    : m_m(mass), m_a_x(0), m_a_y(0) {
+  //get distance from sun's center
+  const double& radius = std::cbrt((pow(period, 2)*g*mass)/(4*pow(M_PI, 2)));
+  const double& velocity_tangential = radius*(360/period);
+
+  double* values;
+  if(angle<90)
+    values = new double[4] {star_centerx+(180/M_PI)*sin(angle)*radius, star_centery+(180/M_PI)*cos(angle)*radius, (180/M_PI)*cos(angle+90)*velocity_tangential, (180/M_PI)*sin(angle+90)*velocity_tangential};
+  else if(angle<180)
+    values = new double[4] {star_centerx+(180/M_PI)*cos(angle)*radius, star_centery+(180/M_PI)*sin(angle)*radius, (180/M_PI)*sin(angle+90)*velocity_tangential, (180/M_PI)*cos(angle+90)*velocity_tangential};
+  else if(angle<270)
+    values = new double[4] {star_centerx+(180/M_PI)*sin(angle)*radius, star_centery+(180/M_PI)*cos(angle)*radius, (180/M_PI)*cos(angle+90)*velocity_tangential, (180/M_PI)*sin(angle+90)*velocity_tangential};
+  else
+    values = new double[4] {star_centerx+(180/M_PI)*cos(angle)*radius, star_centery+(180/M_PI)*sin(angle)*radius, (180/M_PI)*sin(angle-270)*velocity_tangential, (180/M_PI)*cos(angle-270)*velocity_tangential};
+
+  m_x = values[0];
+  m_y = values[1];
+  m_v_x = values[2];
+  m_v_y = values[3];
+
+	m_surface = surfaceFromBMP(image_file);
+	assert(m_surface && "Check image file, couldn't create");
+	m_texture = SDL_CreateTextureFromSurface(renderer, m_surface);
+	assert(m_texture && "couldn't create texture");
+	m_dstrect = new SDL_Rect();
+	assert(m_dstrect && "couldn't create dstrect");
+}
 void Object::accelerate(double x, double y) {
 	if(x == std::numeric_limits<double>::infinity()) x = 0;
 	if(x == -1 * std::numeric_limits<double>::infinity()) x = 0;

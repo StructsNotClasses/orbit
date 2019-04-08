@@ -22,8 +22,16 @@ Planet::Planet(planetType type, int x_o, int y_o, SDL_Renderer* renderer, double
 }
 
 //alternate constructor which takes the desired period of revolution and intializes the planet with the values to enable stable orbit with this period
-Planet::Planet(planetType type, const int& angle_o, SDL_Renderer* renderer, const double& mass, const double& T_o /*ticks per revolution*/, double* tmp, const double& star_centerx, const double& star_centery)
-  : tmp(getInitialValues(star_centerx, star_centery, angle_o, mass, g, T_o)) {
+Planet::Planet(planetType type, const int& angle_o, SDL_Renderer* renderer, const double& mass, double g, const double& T_o /*ticks per revolution*/, const double& star_centerx, const double& star_centery)
+  : Object(fileFromType(type), star_centerx, star_centery, angle_o, mass, g, T_o, renderer) {
+  m_srcrect->w = 9;
+  m_srcrect->h = 9;
+  m_srcrect->x = 12;
+  m_srcrect->y = 5;
+  m_dstrect->w = 20;
+  m_dstrect->h = 20;
+  m_dstrect->x = m_x - m_srcrect->w/2;
+  m_dstrect->y = m_y - m_srcrect->h/2;
 }
 
 void Planet::update() {
@@ -47,10 +55,25 @@ const char* Planet::fileFromType(planetType type) {
   }
 }
 
-//returns an array of values like {x_o, y_o, x_v_o, y_v_o}
-double* Planet::getIntialValues(double star_c_x, double star_c_y, int angle, double mass, double g, double period, bool axis) {
+//returns the array of values {x_o, y_o, x_v_o, y_v_o}
+//negative period will reverse direction of rotation
+double* Planet::getInitialValues(double star_c_x, double star_c_y, int angle, double mass, double g, double period) {
   //get distance from sun's center
-  const double& radius = std::cbrt((pow(period, 2)*g*mass)/(4*pow(PI, 2)));
+  const double& radius = std::cbrt((pow(period, 2)*g*mass)/(4*pow(M_PI, 2)));
+  const double& velocity_tangential = radius*(360/period);
 
-  const double& velocityTangential = radius*(360/period);
+  if(angle<90) {
+    return new double[4] {star_c_x+(180/M_PI)*sin(angle)*radius, star_c_y+(180/M_PI)*cos(angle)*radius, (180/M_PI)*cos(angle+90)*velocity_tangential, (180/M_PI)*sin(angle+90)*velocity_tangential};
+  }
+  else if(angle<180) {
+    return new double[4] {star_c_x+(180/M_PI)*cos(angle)*radius, star_c_y+(180/M_PI)*sin(angle)*radius, (180/M_PI)*sin(angle+90)*velocity_tangential, (180/M_PI)*cos(angle+90)*velocity_tangential};
+  }
+  else if(angle<270) {
+    return new double[4] {star_c_x+(180/M_PI)*sin(angle)*radius, star_c_y+(180/M_PI)*cos(angle)*radius, (180/M_PI)*cos(angle+90)*velocity_tangential, (180/M_PI)*sin(angle+90)*velocity_tangential};
+  }
+  else if(angle<360) {
+    return new double[4] {star_c_x+(180/M_PI)*cos(angle)*radius, star_c_y+(180/M_PI)*sin(angle)*radius, (180/M_PI)*sin(angle-270)*velocity_tangential, (180/M_PI)*cos(angle-270)*velocity_tangential};
+  }
+
+  assert((0)&&"The angle is probably either negative or > 360, which is weird");
 }

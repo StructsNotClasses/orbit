@@ -3,6 +3,7 @@
 class Object {
 	public:
 		Object(const char* image_file, int x, int y, double mass, SDL_Renderer* renderer);
+    Object(const char* image_file, double star_centerx, double star_centery, double angle, double mass, double g, double period, SDL_Renderer* renderer);
 
     void accelerate(double x, double y);
     void pullTowardsObject(Object* object, const double g);
