@@ -19,19 +19,23 @@ Object::Object(const char* image_file, double star_centerx, double star_centery,
     : m_m(mass), m_a_x(0), m_a_y(0) {
   //get distance from sun's center
   const double& radius = std::cbrt((pow(period, 2)*g*star_mass)/(4*pow(M_PI, 2)));
-  const double& velocity_tangential = .01 * radius*(2*M_PI/period);
+  const double& velocity_tangential = radius*(2*M_PI/period); //good
 
-  std::cout << "radius " << radius << " vt " << velocity_tangential << '\n';
+  std::cout << "period " << period << " radius " << radius << " vt " << velocity_tangential << '\n';
+  std::cout << "xstar " << star_centerx << " ystar " << star_centery << "\n";
+  std::cout << "angle " << angle << "\n";
 
   double* values;
   if(angle<90)
-    values = new double[4] {star_centerx+(180/M_PI)*sin(angle)*radius, star_centery+(180/M_PI)*cos(angle)*radius, (180/M_PI)*cos(angle+90)*velocity_tangential, (180/M_PI)*sin(angle+90)*velocity_tangential};
+    values = new double[4] {star_centerx+(180/M_PI)*sin(angle*(M_PI/180))*radius, star_centery+(180/M_PI)*cos(angle*(M_PI/180))*radius, (180/M_PI)*cos((angle+90)*(M_PI/180))*velocity_tangential, (180/M_PI)*sin(angle+90)*velocity_tangential};
   else if(angle<180)
-    values = new double[4] {star_centerx+(180/M_PI)*cos(angle)*radius, star_centery+(180/M_PI)*sin(angle)*radius, (180/M_PI)*sin(angle+90)*velocity_tangential, (180/M_PI)*cos(angle+90)*velocity_tangential};
+    values = new double[4] {star_centerx+((180/M_PI)*cos(angle*(M_PI/180)))*radius, star_centery+(180/M_PI)*sin(angle*(M_PI/180))*radius, (180/M_PI)*sin((angle+90)*(M_PI/180))*velocity_tangential, (180/M_PI)*cos(angle+90)*velocity_tangential};
   else if(angle<270)
-    values = new double[4] {star_centerx+(180/M_PI)*sin(angle)*radius, star_centery+(180/M_PI)*cos(angle)*radius, (180/M_PI)*cos(angle+90)*velocity_tangential, (180/M_PI)*sin(angle+90)*velocity_tangential};
+    values = new double[4] {star_centerx+(180/M_PI)*sin(angle*(M_PI/180))*radius, star_centery+(180/M_PI)*cos(angle*(M_PI/180))*radius, (180/M_PI)*cos((angle+90)*(M_PI/180))*velocity_tangential, (180/M_PI)*sin(angle+90)*velocity_tangential};
   else
-    values = new double[4] {star_centerx+(180/M_PI)*cos(angle)*radius, star_centery+(180/M_PI)*sin(angle)*radius, (180/M_PI)*sin(angle-270)*velocity_tangential, (180/M_PI)*cos(angle-270)*velocity_tangential};
+    values = new double[4] {star_centery+(180/M_PI)*sin(angle*(M_PI/180))*radius, star_centerx+(180/M_PI)*cos(angle*M_PI/180)*radius, (180/M_PI)*sin((angle-270)*(M_PI/180))*velocity_tangential, (180/M_PI)*cos(angle-270)*velocity_tangential};
+
+  std::cout << "1, 2, 3, 4 " << values[0] << ", " << values[1] << ", " << values[2] << ", " << values[3] << "\n";
 
   m_x = values[0];
   m_y = values[1];

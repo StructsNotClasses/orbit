@@ -24,7 +24,7 @@ bool Game::init(double g_x, double g_y) {
 	star = new Star("assets/sun.bmp", "assets/sun2.bmp", (SCREEN_WIDTH/2), (SCREEN_HEIGHT/2), renderer, 10000);
 
   //create planets
-  planets.push_back(new Planet(BARREN_ROCK, 270, renderer, 100, 10, 15, SCREEN_WIDTH/2, SCREEN_HEIGHT/2));
+  planets.push_back(new Planet(BARREN_ROCK, 270, 100, 10, 5, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer));
 
   //Planet::Planet(planetType type, const int& angle_o, SDL_Renderer* renderer, const double& mass, double g, const double& T_o /*ticks per revolution*/, const double& star_centerx, const double& star_centery)
   assert(planets[0]&&"couldn't create planet 1");

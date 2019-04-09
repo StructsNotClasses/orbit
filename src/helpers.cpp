@@ -64,18 +64,18 @@ double* gravitationalAcceleration(double x1, double y1, double x2, double y2, do
 	const double &force = gravitationalForce(m1, m2, distance(x1, y1, x2, y2), g)/m2;
 
 	//determine quadrant
-	int quadrent{-1};
-	if((x2>=x1) && (y2<y1)) quadrent = 1;
-	if((x2>x1) && (y2>=y1)) quadrent = 2;
-	if((x2<=x1) && (y2>y1)) quadrent = 3;
-	if((x2<x1) && (y2<=y1)) quadrent = 4;
-	if(quadrent==-1) return new double[2] {0,0};
+	int quadrant{-1};
+	if((x2>=x1) && (y2<y1)) quadrant = 1;
+	if((x2>x1) && (y2>=y1)) quadrant = 2;
+	if((x2<=x1) && (y2>y1)) quadrant = 3;
+	if((x2<x1) && (y2<=y1)) quadrant = 4;
+	if(quadrant==-1) return new double[2] {0,0};
 
 	//calc angle, the resulting angle is in radians and is from the distance line to the nearest axis in the counterclockwise direction
 	//after angle calculated, use it to split the gravitational force into x and y components
 	//returns a double* with x as first index and y as second index
 	double angle{0};
-	switch(quadrent) {
+	switch(quadrant) {
 		case 1: 
 			angle=(atan((x2-x1)/(y1-y2))); 
 			return new double[2] {-1*(sin(angle)*force),cos(angle)*force};
@@ -89,7 +89,7 @@ double* gravitationalAcceleration(double x1, double y1, double x2, double y2, do
 			angle=(atan((y1-y2)/(x1-x2))); 
 			return new double[2] {cos(angle)*force,sin(angle)*force};
 		default:
-      assert(!(quadrent==-1) && "Something is very wrong, perhaps a coordinate is null or something");
+      assert(!(quadrant==-1) && "Something is very wrong, perhaps a coordinate is null or something");
 			return 0;
 	}
 }

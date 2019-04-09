@@ -23,8 +23,8 @@ Planet::Planet(planetType type, int x_o, int y_o, SDL_Renderer* renderer, double
 }
 
 //alternate constructor which takes the desired period of revolution and intializes the planet with the values to enable stable orbit with this period
-Planet::Planet(planetType type, const int& angle_o, SDL_Renderer* renderer, const double& mass, double g, const double& T_o /*ticks per revolution*/, const double& star_centerx, const double& star_centery)
-  : Object(fileFromType(type), star_centerx, star_centery, 1000, angle_o, mass, g, T_o, renderer), m_srcrect(new SDL_Rect) {
+Planet::Planet(planetType type, const int& angle_o, const double& mass, double g, const double& T_o /*ticks per revolution*/, const double& star_centerx, const double& star_centery, const double& star_mass, SDL_Renderer* renderer)
+  : Object(fileFromType(type), star_centerx, star_centery, star_mass, angle_o, mass, g, T_o, renderer), m_srcrect(new SDL_Rect) {
   m_srcrect->w = 9;
   m_srcrect->h = 9;
   std::cout << "skrrt\n";
