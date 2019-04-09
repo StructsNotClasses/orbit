@@ -7,7 +7,7 @@ enum planetType {
 
 class Planet : public Object {
 	public:
-    const char* fileFromType(planetType type);
+    static const char* fileFromType(planetType type);
   
 		Planet(planetType type, int x_o, int y_o, SDL_Renderer* renderer, double mass, double v_x_o, double v_y_o);
 		Planet(planetType type, int angle_o, SDL_Renderer* renderer, double mass, double T_o);

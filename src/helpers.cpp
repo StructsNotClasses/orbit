@@ -3,7 +3,6 @@
 #include <cmath>
 #include <iostream>
 
-#define yeet assert(!(quadrent==-1) && "Something is very wrong, perhaps a coordinate is null or something");
 
 SDL_Surface* surfaceFromBMP(const char* file) {
 	SDL_Surface* return_surface{NULL};
@@ -90,7 +89,7 @@ double* gravitationalAcceleration(double x1, double y1, double x2, double y2, do
 			angle=(atan((y1-y2)/(x1-x2))); 
 			return new double[2] {cos(angle)*force,sin(angle)*force};
 		default:
-			yeet
+      assert(!(quadrent==-1) && "Something is very wrong, perhaps a coordinate is null or something");
 			return 0;
 	}
 }

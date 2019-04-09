@@ -1,9 +1,11 @@
 #include <assert.h>
 #include <limits>
+#include <cmath>
 #include "object.h"
 #include "planet.h"
 #include "helpers.h"
 #include "variables.h"
+
 
 Planet::Planet(planetType type, int x_o, int y_o, SDL_Renderer* renderer, double mass, double v_x_o, double v_y_o)
   : Object(fileFromType(type), x_o, y_o, mass, renderer), m_srcrect(new SDL_Rect) {
@@ -17,6 +19,11 @@ Planet::Planet(planetType type, int x_o, int y_o, SDL_Renderer* renderer, double
   m_dstrect->y = y_o - m_srcrect->h/2;
   m_v_x = v_x_o;
   m_v_y = v_y_o;
+}
+
+//alternate constructor which takes the desired period of revolution and intializes the planet with the values to enable stable orbit with this period
+Planet::Planet(planetType type, const int& angle_o, SDL_Renderer* renderer, const double& mass, const double& T_o /*ticks per revolution*/, double* tmp, const double& star_centerx, const double& star_centery)
+  : tmp(getInitialValues(star_centerx, star_centery, angle_o, mass, g, T_o)) {
 }
 
 void Planet::update() {
@@ -38,4 +45,12 @@ const char* Planet::fileFromType(planetType type) {
     case 0: return "assets/rock_planet.bmp";
     default: return "assets/rock_planet.bmp";
   }
+}
+
+//returns an array of values like {x_o, y_o, x_v_o, y_v_o}
+double* Planet::getIntialValues(double star_c_x, double star_c_y, int angle, double mass, double g, double period, bool axis) {
+  //get distance from sun's center
+  const double& radius = std::cbrt((pow(period, 2)*g*mass)/(4*pow(PI, 2)));
+
+  const double& velocityTangential = radius*(360/period);
 }
