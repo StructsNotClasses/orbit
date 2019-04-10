@@ -1,4 +1,5 @@
 #include <assert.h>
+#include <iostream>
 #include <limits>
 #include <cmath>
 #include "object.h"
@@ -23,9 +24,10 @@ Planet::Planet(planetType type, int x_o, int y_o, SDL_Renderer* renderer, double
 
 //alternate constructor which takes the desired period of revolution and intializes the planet with the values to enable stable orbit with this period
 Planet::Planet(planetType type, const int& angle_o, SDL_Renderer* renderer, const double& mass, double g, const double& T_o /*ticks per revolution*/, const double& star_centerx, const double& star_centery)
-  : Object(fileFromType(type), star_centerx, star_centery, angle_o, mass, g, T_o, renderer) {
+  : Object(fileFromType(type), star_centerx, star_centery, 1000, angle_o, mass, g, T_o, renderer), m_srcrect(new SDL_Rect) {
   m_srcrect->w = 9;
   m_srcrect->h = 9;
+  std::cout << "skrrt\n";
   m_srcrect->x = 12;
   m_srcrect->y = 5;
   m_dstrect->w = 20;
@@ -57,6 +59,7 @@ const char* Planet::fileFromType(planetType type) {
 
 //returns the array of values {x_o, y_o, x_v_o, y_v_o}
 //negative period will reverse direction of rotation
+/*
 double* Planet::getInitialValues(double star_c_x, double star_c_y, int angle, double mass, double g, double period) {
   //get distance from sun's center
   const double& radius = std::cbrt((pow(period, 2)*g*mass)/(4*pow(M_PI, 2)));
@@ -77,3 +80,4 @@ double* Planet::getInitialValues(double star_c_x, double star_c_y, int angle, do
 
   assert((0)&&"The angle is probably either negative or > 360, which is weird");
 }
+*/

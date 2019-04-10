@@ -25,19 +25,9 @@ bool Game::init(double g_x, double g_y) {
 
   //create planets
   planets.push_back(new Planet(BARREN_ROCK, 270, renderer, 100, 10, 15, SCREEN_WIDTH/2, SCREEN_HEIGHT/2));
+
   //Planet::Planet(planetType type, const int& angle_o, SDL_Renderer* renderer, const double& mass, double g, const double& T_o /*ticks per revolution*/, const double& star_centerx, const double& star_centery)
   assert(planets[0]&&"couldn't create planet 1");
-
-	//create the player texture
-	//test = SDL_CreateTextureFromSurface(renderer, surfaceFromBMP("assets/rocket.bmp"));
-	//if(test == NULL) return false;
-
-	//create the rect that controlles the player rendering location and size
-	//dstrect = new SDL_Rect;
-	//dstrect->x = x;
-	//dstrect->y = y;
-	//dstrect->w = 35;
-	//dstrect->h = 35;
 
 	return true;
 }

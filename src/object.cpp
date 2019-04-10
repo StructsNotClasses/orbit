@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <limits>
+#include <iostream>
 #include "object.h"
 #include "helpers.h"
 Object::Object(const char* image_file, int x, int y, double mass, SDL_Renderer* renderer) 
@@ -14,11 +15,13 @@ Object::Object(const char* image_file, int x, int y, double mass, SDL_Renderer* 
 	m_v_y=0;
 }
 
-Object::Object(const char* image_file, double star_centerx, double star_centery, double angle, double mass, double g, double period, SDL_Renderer* renderer)
+Object::Object(const char* image_file, double star_centerx, double star_centery, double star_mass, double angle, double mass, double g, double period, SDL_Renderer* renderer)
     : m_m(mass), m_a_x(0), m_a_y(0) {
   //get distance from sun's center
-  const double& radius = std::cbrt((pow(period, 2)*g*mass)/(4*pow(M_PI, 2)));
-  const double& velocity_tangential = radius*(360/period);
+  const double& radius = std::cbrt((pow(period, 2)*g*star_mass)/(4*pow(M_PI, 2)));
+  const double& velocity_tangential = .01 * radius*(2*M_PI/period);
+
+  std::cout << "radius " << radius << " vt " << velocity_tangential << '\n';
 
   double* values;
   if(angle<90)
