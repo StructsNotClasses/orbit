@@ -33,8 +33,9 @@ Object::Object(const char* image_file, double star_centerx, double star_centery,
   else if(angle<270)
     values = new double[4] {star_centerx+(180/M_PI)*sin(angle*(M_PI/180))*radius, star_centery+(180/M_PI)*cos(angle*(M_PI/180))*radius, (180/M_PI)*cos((angle+90)*(M_PI/180))*velocity_tangential, (180/M_PI)*sin(angle+90)*velocity_tangential};
   else
-    values = new double[4] {star_centery+(180/M_PI)*sin(angle*(M_PI/180))*radius, star_centerx+(180/M_PI)*cos(angle*M_PI/180)*radius, (180/M_PI)*sin((angle-270)*(M_PI/180))*velocity_tangential, (180/M_PI)*cos(angle-270)*velocity_tangential};
+    values = new double[4] {star_centerx+sin(angle*M_PI/180)*radius, star_centery+cos(angle*(M_PI/180))*radius, sin((angle-270)*M_PI/180)*velocity_tangential, cos(angle-270*M_PI/180)*velocity_tangential};
 
+  std::cout << sin(angle*M_PI/180)*radius << "\n";
   std::cout << "1, 2, 3, 4 " << values[0] << ", " << values[1] << ", " << values[2] << ", " << values[3] << "\n";
 
   m_x = values[0];
