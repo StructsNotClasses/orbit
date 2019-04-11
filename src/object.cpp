@@ -15,14 +15,13 @@ Object::Object(const char* image_file, int x, int y, double mass, SDL_Renderer* 
 	m_v_y=0;
 }
 
-Object::Object(const char* image_file, double star_centerx, double star_centery, double star_mass, double angle, double mass, double g, double period, SDL_Renderer* renderer)
+Object::Object(const char* image_file, double star_centerx, double star_centery, double star_mass, double angle, double mass, double g, double radius, SDL_Renderer* renderer)
   : m_dstrect(new SDL_Rect), m_m(mass), m_a_x(0), m_a_y(0) {
-  //get distance from sun's center
-  const double& radius = std::cbrt((pow(period, 2)*g*star_mass)/(4*pow(M_PI, 2)));
+  //get period of orbit
+  const double& T_o = 2*M_PI*(std::sqrt((radius*radius*radius)/(g*star_mass)));
   //const double& velocity_tangential = radius*(360/period); //good
-  const double& velocity_tangential = (gravitationalForce(star_mass, mass, radius, g) * radius)/mass;
-
-  std::cout << "period " << period << " radius " << radius << " vt " << velocity_tangential << '\n';
+  const double& velocity_tangential = std::sqrt(g*mass/radius);
+  std::cout << " radius " << radius << " vt " << velocity_tangential << '\n';
   std::cout << "xstar " << star_centerx << " ystar " << star_centery << "\n";
   std::cout << "angle " << angle << "\n";
 
@@ -38,7 +37,7 @@ Object::Object(const char* image_file, double star_centerx, double star_centery,
     values = new double[4] {star_centerx+(180/M_PI)*sin(angle*(M_PI/180))*radius, star_centery+(180/M_PI)*cos(angle*(M_PI/180))*radius, (180/M_PI)*cos((angle+90)*(M_PI/180))*velocity_tangential, (180/M_PI)*sin(angle+90)*velocity_tangential};
 
   else
-    values = new double[4] {star_centerx+sin(angle*M_PI/180)*radius, star_centery+cos(angle*(M_PI/180))*radius, sin((angle-270)*M_PI/180)*velocity_tangential, cos(angle-270*M_PI/180)*velocity_tangential};
+    values = new double[4] {/*star_centerx+sin(angle*M_PI/180)*radius*/star_centerx-radius, /*star_centery+cos(angle*(M_PI/180))*radius*/star_centery, /*sin((angle-270)*M_PI/180)*velocity_tangential*/0, /*cos(angle-270*M_PI/180)*velocity_tangential*/velocity_tangential};
 
   std::cout << sin(angle*M_PI/180)*radius << "\n";
   std::cout << "1, 2, 3, 4 " << values[0] << ", " << values[1] << ", " << values[2] << ", " << values[3] << "\n";
