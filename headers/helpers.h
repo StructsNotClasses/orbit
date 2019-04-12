@@ -8,4 +8,6 @@ void wrap(int s_x, int s_y, double *o_x, double *o_y);
 
 double distance(double fx, double fy, double sx, double sy);
 
+double gravitationalForce(double m1, double m2, double distance, const double g);
+
 double* gravitationalAcceleration(double x1, double y1, double x2, double y2, double m1, double m2, const double g);

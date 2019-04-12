@@ -16,22 +16,27 @@ Object::Object(const char* image_file, int x, int y, double mass, SDL_Renderer* 
 }
 
 Object::Object(const char* image_file, double star_centerx, double star_centery, double star_mass, double angle, double mass, double g, double period, SDL_Renderer* renderer)
-    : m_m(mass), m_a_x(0), m_a_y(0) {
+  : m_dstrect(new SDL_Rect), m_m(mass), m_a_x(0), m_a_y(0) {
   //get distance from sun's center
   const double& radius = std::cbrt((pow(period, 2)*g*star_mass)/(4*pow(M_PI, 2)));
-  const double& velocity_tangential = radius*(2*M_PI/period); //good
+  //const double& velocity_tangential = radius*(360/period); //good
+  const double& velocity_tangential = (gravitationalForce(star_mass, mass, radius, g) * radius)/mass;
 
   std::cout << "period " << period << " radius " << radius << " vt " << velocity_tangential << '\n';
   std::cout << "xstar " << star_centerx << " ystar " << star_centery << "\n";
   std::cout << "angle " << angle << "\n";
 
   double* values;
+
   if(angle<90)
     values = new double[4] {star_centerx+(180/M_PI)*sin(angle*(M_PI/180))*radius, star_centery+(180/M_PI)*cos(angle*(M_PI/180))*radius, (180/M_PI)*cos((angle+90)*(M_PI/180))*velocity_tangential, (180/M_PI)*sin(angle+90)*velocity_tangential};
+
   else if(angle<180)
     values = new double[4] {star_centerx+((180/M_PI)*cos(angle*(M_PI/180)))*radius, star_centery+(180/M_PI)*sin(angle*(M_PI/180))*radius, (180/M_PI)*sin((angle+90)*(M_PI/180))*velocity_tangential, (180/M_PI)*cos(angle+90)*velocity_tangential};
+
   else if(angle<270)
     values = new double[4] {star_centerx+(180/M_PI)*sin(angle*(M_PI/180))*radius, star_centery+(180/M_PI)*cos(angle*(M_PI/180))*radius, (180/M_PI)*cos((angle+90)*(M_PI/180))*velocity_tangential, (180/M_PI)*sin(angle+90)*velocity_tangential};
+
   else
     values = new double[4] {star_centerx+sin(angle*M_PI/180)*radius, star_centery+cos(angle*(M_PI/180))*radius, sin((angle-270)*M_PI/180)*velocity_tangential, cos(angle-270*M_PI/180)*velocity_tangential};
 
@@ -40,14 +45,14 @@ Object::Object(const char* image_file, double star_centerx, double star_centery,
 
   m_x = values[0];
   m_y = values[1];
+  std::cout << m_x << " u " << m_y << "\n";
   m_v_x = values[2];
   m_v_y = values[3];
+  std::cout << "velocity: " << m_v_x << " , " << m_v_y << "\n";
 
 	m_surface = surfaceFromBMP(image_file);
-	assert(m_surface && "Check image file, couldn't create");
-	m_texture = SDL_CreateTextureFromSurface(renderer, m_surface);
-	assert(m_texture && "couldn't create texture");
-	m_dstrect = new SDL_Rect();
+  m_texture = SDL_CreateTextureFromSurface(renderer, m_surface);
+	assert(m_surface && "couldn't create texture");
 	assert(m_dstrect && "couldn't create dstrect");
 }
 void Object::accelerate(double x, double y) {
