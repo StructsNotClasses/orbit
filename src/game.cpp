@@ -25,6 +25,9 @@ bool Game::init(double g_x, double g_y) {
 
   //create planets
   planets.push_back(new Planet(BARREN_ROCK, 270, 100, 10, 100, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer));
+  planets.push_back(new Planet(BARREN_ROCK, 270, 100, 10, 400, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer));
+  planets.push_back(new Planet(BARREN_ROCK, 270, 100, 10, 600, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer));
+  planets.push_back(new Planet(BARREN_ROCK, 270, 100, 10, 700, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer));
 
   //Planet::Planet(planetType type, const int& angle_o, SDL_Renderer* renderer, const double& mass, double g, const double& T_o /*ticks per revolution*/, const double& star_centerx, const double& star_centery)
   assert(planets[0]&&"couldn't create planet 1");
@@ -38,14 +41,10 @@ void Game::update() {
 
   //update planets
   for(Planet* current_planet : planets) {
-    current_planet->pullTowardsObject(star, 1);
+    current_planet->pullTowardsObject(star, 10);
     current_planet->pullTowardsObject(player,10);
     current_planet->update();
   }
-
-	//std::cout << "Star: (" << star->getx() << ", " << star->gety() << ")\n";
-  //std::cout << "Planet(0): (" << (planets[0])->getx() << ", " << (planets[0])->gety() << ")\n"; 
-	//std::cout << "Player: (" << player->getx() + 5 << ", " << player->gety() + 3 << ")\n";
 
   //update player
   player->pullTowardsObject(star, 10);
@@ -122,8 +121,16 @@ bool Game::event(SDL_Event* event) {
 	
 
 void Game::quit() {
-	//SDL_FreeSurface(screen);
-	SDL_DestroyTexture(test);
+  player->~Player();
+
+  std::cout << "wheeee\n";
+  star->~Star();
+
+  for(Planet* current_planet : planets) {
+    current_planet->~Planet();
+  }
+
 	SDL_DestroyWindow(game_window);
+  SDL_DestroyRenderer(renderer);
 	SDL_Quit();
 }

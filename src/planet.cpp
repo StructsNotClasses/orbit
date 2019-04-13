@@ -61,6 +61,12 @@ const char* Planet::fileFromType(planetType type) {
   }
 }
 
+Planet::~Planet() {
+  //delete members
+  delete m_srcrect;
+  Object::~Object();
+}
+
 //returns the array of values {x_o, y_o, x_v_o, y_v_o}
 //negative period will reverse direction of rotation
 /*

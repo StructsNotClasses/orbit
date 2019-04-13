@@ -11,6 +11,8 @@ class Star : public Object {
 
 		SDL_Texture* m_texture2{NULL};
 
+    ~Star();
+
 	private:
 		bool frame;
 };

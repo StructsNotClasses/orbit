@@ -45,5 +45,8 @@ void Player::render(SDL_Renderer* renderer) {
 	SDL_RenderCopy(renderer, m_texture, m_srcrect, m_dstrect);
 }
 
-//void Player::render(SDL_Surface* screen) {
-//}
+Player::~Player() {
+  //delete members
+  m_srcrect->~SDL_Rect();
+  Object::~Object();
+}

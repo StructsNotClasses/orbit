@@ -13,17 +13,17 @@ class Planet : public Object {
 
     static double* getInitialValues(double star_c_x, double star_c_y, int angle, double mass, double g, double period);
 
-  Planet(planetType type, const int& angle_o, const double& mass, double g, const double& T_o, const double& star_centerx, const double& star_centery, const double& star_mass, SDL_Renderer* renderer);
+    Planet(planetType type, const int& angle_o, const double& mass, double g, const double& T_o, const double& star_centerx, const double& star_centery, const double& star_mass, SDL_Renderer* renderer);
 
     void accelerate(double x, double y);
 
     void update();
     void render(SDL_Renderer* renderer);
 
+    ~Planet();
+
 	private:
 		planetType m_type;
 		double m_T_intial;
     SDL_Rect* m_srcrect;
-    //allows me to pass the data from a function into another thing
-    double* tmp;
 };

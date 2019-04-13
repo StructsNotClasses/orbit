@@ -11,6 +11,8 @@ class Player : public Object {
 
 		void render(SDL_Renderer* renderer);
 
+    ~Player();
+
 		SDL_Rect* m_srcrect{NULL};
 };
 

@@ -17,8 +17,6 @@ class Game {
 		void update();
 		void quit();
 
-		SDL_Texture* test{NULL};
-		SDL_Rect* dstrect{nullptr};
 		SDL_Window* game_window{NULL};
 		SDL_Renderer* renderer{NULL};
 

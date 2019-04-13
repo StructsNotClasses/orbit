@@ -15,6 +15,8 @@ class Object {
 		double gety() {return m_y;}
     double getmass() {return m_m;}
 
+    ~Object();
+
 	protected:
 		double m_x;
 		double m_y;
