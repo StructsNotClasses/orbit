@@ -2,7 +2,9 @@
 #include <assert.h>
 #include "game.h" 
 #include "helpers.h"
-bool Game::init(double g_x, double g_y) {
+bool Game::init(double g_x, double g_y, double G) {
+  count=0;
+  m_G=G;
 	if(SDL_Init(SDL_INIT_EVERYTHING) < 0) return false;
 	
 	//create main window
@@ -12,45 +14,63 @@ bool Game::init(double g_x, double g_y) {
 
 	//create renderer and set draw color
 	renderer = SDL_CreateRenderer(game_window, -1, 0);
-	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
 	//render starting frame
 	SDL_RenderPresent(renderer);
 
 	//create player
-	player = new Player("assets/rocket.bmp", (SCREEN_WIDTH/2), (SCREEN_HEIGHT/2-400), renderer, 1, g_x, g_y);
+	player = new Player("assets/ship_frames/none.bmp", (SCREEN_WIDTH/2+400), (SCREEN_HEIGHT/2-400), renderer, 1, g_x, g_y);
 
 	//create star
-	star = new Star("assets/sun.bmp", "assets/sun2.bmp", (SCREEN_WIDTH/2), (SCREEN_HEIGHT/2), renderer, 10000);
+	star = new Star("assets/sun.bmp", (SCREEN_WIDTH/2), (SCREEN_HEIGHT/2), renderer, 1000);
 
   //create planets
-  planets.push_back(new Planet(BARREN_ROCK, 270, 100, 10, 100, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer));
-  planets.push_back(new Planet(BARREN_ROCK, 270, 100, 10, 400, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer));
-  planets.push_back(new Planet(BARREN_ROCK, 270, 100, 10, 600, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer));
-  planets.push_back(new Planet(BARREN_ROCK, 270, 100, 10, 700, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer));
+  planets.push_back(new Planet(BARREN_ROCK, 170, 100, G, 500, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 0));
+  planets.push_back(new Planet(BARREN_ROCK, 250, 100, G, 400, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 1));
+  //planets.push_back(new Planet(BARREN_ROCK, 271, 100, 10, 600, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 0));
+  //planets.push_back(new Planet(BARREN_ROCK, 271, 100, 10, 700, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 1));
 
-  //Planet::Planet(planetType type, const int& angle_o, SDL_Renderer* renderer, const double& mass, double g, const double& T_o /*ticks per revolution*/, const double& star_centerx, const double& star_centery)
-  assert(planets[0]&&"couldn't create planet 1");
+  for(const Planet* planet : planets) {
+    assert(planet && "failed to intialize a planet");
+  }
 
 	return true;
 }
 
 void Game::update() {
+  //overflow, though unlikely, could occur
+  if(count<0)count=0;
+  count+=1;
+
+  //apply player movement
+	if(w_pressed) player->accelerateByAngle(player->m_angle, .10);
+	if(s_pressed) player->accelerateByAngle(player->m_angle, -.10);
+	if(a_pressed) player->accelerateSpin(-.10);
+	if(d_pressed) player->accelerateSpin(.10);
+  std::cout << "angle is " << player->m_angle << "\n";
+
 	//animate sun
 	star->update();
 
   //update planets
   for(Planet* current_planet : planets) {
-    current_planet->pullTowardsObject(star, 10);
-    current_planet->pullTowardsObject(player,10);
+    current_planet->pullTowardsObject(star, m_G);
+    current_planet->pullTowardsObject(player,m_G);
+    /*for(Planet* other_current_planet : planets) {
+      if(!(current_planet == other_current_planet)) {
+        current_planet->pullTowardsObject(other_current_planet,m_G);
+      }
+    }*/
     current_planet->update();
   }
 
   //update player
-  player->pullTowardsObject(star, 10);
+  player->pullTowardsObject(star, m_G);
   for(Planet* current_planet : planets) {
-    player->pullTowardsObject(current_planet, 10);
+    player->pullTowardsObject(current_planet, m_G);
   }
+
 	player->update();
 
 	//clear the window
@@ -59,7 +79,7 @@ void Game::update() {
 	//background image
 	//
 	//rendercopy the star
-	star->render(renderer);
+	star->render(renderer, count);
 
   //rendercopy the planets
   for(Planet* current_planet : planets) {
@@ -67,7 +87,7 @@ void Game::update() {
   }
 
 	//rendercopy the player
-	player->render(renderer);
+	player->render(renderer, w_pressed, s_pressed, count);
 
 	//render the changes
 	SDL_RenderPresent(renderer);
@@ -112,18 +132,13 @@ bool Game::event(SDL_Event* event) {
 			}
 			break;
 	}
-	if(w_pressed) player->accelerate(0, -.25);
-	if(s_pressed) player->accelerate(0, .25);
-	if(a_pressed) player->accelerate(-.25, 0);
-	if(d_pressed) player->accelerate(.25, 0);
 	return true;
 }
-	
+
 
 void Game::quit() {
   player->~Player();
 
-  std::cout << "wheeee\n";
   star->~Star();
 
   for(Planet* current_planet : planets) {

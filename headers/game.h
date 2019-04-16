@@ -12,7 +12,7 @@ class Game {
 		//Game();
 		//~Game();
 	public:
-		bool init(double g_x=0, double g_y=0);
+    bool init(double g_x=0, double g_y=0, double G = 1);
 		bool event(SDL_Event* event);
 		void update();
 		void quit();
@@ -24,11 +24,16 @@ class Game {
 		Star* star{nullptr};
     std::vector<Planet*> planets;
 
+    //an easy way to manage better animations
+    int count;
+
 	private:
 
 		bool w_pressed{0};
 		bool s_pressed{0};
 		bool a_pressed{0};
 		bool d_pressed{0};
+
+    double m_G;
 };
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <SDL2/SDL.h>
-SDL_Surface* surfaceFromBMP(const char* file);
+#include <SDL2/SDL_image.h>
+SDL_Surface* surfaceFromFile(const char* file);
 
 bool drawToRenderer(SDL_Renderer* destination, SDL_Texture* source, int dx, int dy, int sx, int sy, int w, int h);
 

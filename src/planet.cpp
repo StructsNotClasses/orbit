@@ -25,11 +25,14 @@ Planet::Planet(planetType type, int x_o, int y_o, SDL_Renderer* renderer, double
 }
 
 //alternate constructor which takes the desired period of revolution and intializes the planet with the values to enable stable orbit with this period
-Planet::Planet(planetType type, const int& angle_o, const double& mass, double g, const double& T_o /*ticks per revolution*/, const double& star_centerx, const double& star_centery, const double& star_mass, SDL_Renderer* renderer)
+Planet::Planet(planetType type, const int& angle_o, const double& mass, double g, const double& T_o /*ticks per revolution*/, const double& star_centerx, const double& star_centery, const double& star_mass, SDL_Renderer* renderer, bool counter_clockwise)
   : Object(fileFromType(type), star_centerx, star_centery, star_mass, angle_o, mass, g, T_o, renderer), m_srcrect(new SDL_Rect) {
+  if(!counter_clockwise) {
+    m_v_x *= -1;
+    m_v_y *= -1;
+  }
   m_srcrect->w = 9;
   m_srcrect->h = 9;
-  std::cout << "skrrt\n";
   m_srcrect->x = 12;
   m_srcrect->y = 5;
   m_dstrect->w = 20;
@@ -44,10 +47,8 @@ void Planet::update() {
 	m_x += m_v_x;
 	m_y += m_v_y;
 	wrap(SCREEN_WIDTH, SCREEN_HEIGHT, &m_x, &m_y);
-  std::cout << m_x << " u " << m_y << "\n";
 	m_dstrect->x = m_x;
 	m_dstrect->y = m_y;
-  std::cout << m_dstrect->x << " u " << m_dstrect->y << "\n";
 }
 
 void Planet::render(SDL_Renderer* renderer) {

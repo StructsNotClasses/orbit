@@ -4,16 +4,17 @@
 #include <iostream>
 
 
-SDL_Surface* surfaceFromBMP(const char* file) {
+SDL_Surface* surfaceFromFile(const char* file) {
 	SDL_Surface* return_surface{NULL};
-	SDL_Surface* tmp_surface{NULL};
+	//SDL_Surface* tmp_surface{NULL};
 
-	tmp_surface = SDL_LoadBMP(file);
-	if(tmp_surface == NULL) return NULL;
-	std::cout << "whee\n";
+	return_surface = IMG_Load(file);
+	//if(tmp_surface == NULL) return NULL;
 
-	return_surface = SDL_ConvertSurfaceFormat(tmp_surface, SDL_PIXELFORMAT_RGB555, 0);
+  /*
+	return_surface = SDL_ConvertSurfaceFormat(tmp_surface, SDL_PIXELFORMAT_RGBA5551, 0);
 	SDL_FreeSurface(tmp_surface);
+  */
 	
 	return return_surface;
 }
