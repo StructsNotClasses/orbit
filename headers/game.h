@@ -6,6 +6,7 @@
 #include "planet.h"
 #include "object.h"
 #include "variables.h"
+#include "fuel.h"
 
 class Game {
 	public:
@@ -23,6 +24,7 @@ class Game {
 		Player* player{nullptr};
 		Star* star{nullptr};
     std::vector<Planet*> planets;
+    FuelBar* fuel_bar;
 
     //an easy way to manage better animations
     int count;

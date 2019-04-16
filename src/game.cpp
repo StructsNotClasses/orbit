@@ -35,6 +35,10 @@ bool Game::init(double g_x, double g_y, double G) {
     assert(planet && "failed to intialize a planet");
   }
 
+  //intialize fuelbar
+  fuel_bar = new FuelBar(20, 800, 10, 100, 40, renderer);
+
+
 	return true;
 }
 
@@ -88,6 +92,9 @@ void Game::update() {
 
 	//rendercopy the player
 	player->render(renderer, w_pressed, s_pressed, count);
+
+  //rendercopy the bar
+  fuel_bar->render(renderer);
 
 	//render the changes
 	SDL_RenderPresent(renderer);
