@@ -1,11 +1,14 @@
 #include <iostream>
 #include <assert.h>
+#include <SDL2/SDL_ttf.h>
 #include "game.h" 
 #include "helpers.h"
+
 bool Game::init(double g_x, double g_y, double G) {
   count=0;
   m_G=G;
 	if(SDL_Init(SDL_INIT_EVERYTHING) < 0) return false;
+  if(TTF_Init() < 0) return false;
 
 	//create main window
 	game_window = SDL_CreateWindow("yow", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
@@ -170,5 +173,6 @@ void Game::quit() {
 
 	SDL_DestroyWindow(game_window);
   SDL_DestroyRenderer(renderer);
+  TTF_Quit();
 	SDL_Quit();
 }
