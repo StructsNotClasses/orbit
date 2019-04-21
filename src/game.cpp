@@ -6,7 +6,7 @@ bool Game::init(double g_x, double g_y, double G) {
   count=0;
   m_G=G;
 	if(SDL_Init(SDL_INIT_EVERYTHING) < 0) return false;
-	
+
 	//create main window
 	game_window = SDL_CreateWindow("yow", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 
@@ -14,13 +14,13 @@ bool Game::init(double g_x, double g_y, double G) {
 
 	//create renderer and set draw color
 	renderer = SDL_CreateRenderer(game_window, -1, 0);
-	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
 	//render starting frame
 	SDL_RenderPresent(renderer);
 
 	//create player
-	player = new Player("assets/ship_frames/none.bmp", (SCREEN_WIDTH/2+400), (SCREEN_HEIGHT/2-400), renderer, 1, g_x, g_y);
+	player = new Player("assets/ship_frames/none.png", (SCREEN_WIDTH/2+400), (SCREEN_HEIGHT/2-400), renderer, 1, g_x, g_y);
 
 	//create star
 	star = new Star("assets/sun.bmp", (SCREEN_WIDTH/2), (SCREEN_HEIGHT/2), renderer, 1000);
@@ -31,12 +31,13 @@ bool Game::init(double g_x, double g_y, double G) {
   //planets.push_back(new Planet(BARREN_ROCK, 271, 100, 10, 600, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 0));
   //planets.push_back(new Planet(BARREN_ROCK, 271, 100, 10, 700, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 1));
 
+  //check planets
   for(const Planet* planet : planets) {
     assert(planet && "failed to intialize a planet");
   }
 
-  //intialize fuelbar
-  fuel_bar = new FuelBar(20, 800, 10, 100, 40, renderer);
+  //create fuelbar
+  fuel_bar = new FuelBar(SCREEN_WIDTH/2-600, SCREEN_HEIGHT-45, 1000, 1200, 40, renderer);
 
 
 	return true;
@@ -48,10 +49,24 @@ void Game::update() {
   count+=1;
 
   //apply player movement
-	if(w_pressed) player->accelerateByAngle(player->m_angle, .10);
-	if(s_pressed) player->accelerateByAngle(player->m_angle, -.10);
-	if(a_pressed) player->accelerateSpin(-.10);
-	if(d_pressed) player->accelerateSpin(.10);
+  if(!fuel_bar->isEmpty()) {
+    if(w_pressed) {
+      player->accelerateByAngle(player->m_angle, .10);
+      fuel_bar->update(-1);
+    }
+    if(s_pressed) {
+      player->accelerateByAngle(player->m_angle, -.10);
+      fuel_bar->update(-1);
+    }
+    if(a_pressed) {
+      player->accelerateSpin(-.10);
+      fuel_bar->update(-1);
+    }
+    if(d_pressed) {
+      player->accelerateSpin(.10);
+      fuel_bar->update(-1);
+    }
+  }
   std::cout << "angle is " << player->m_angle << "\n";
 
 	//animate sun
@@ -91,9 +106,10 @@ void Game::update() {
   }
 
 	//rendercopy the player
-	player->render(renderer, w_pressed, s_pressed, count);
+	player->render(renderer, w_pressed, s_pressed, fuel_bar->isEmpty(), count);
 
   //rendercopy the bar
+  //SDL_FillRect(fuel_bar->bar_surface, NULL, SDL_MapRGB(fuel_bar->bar_surface->format, 055, 055, 055));
   fuel_bar->render(renderer);
 
 	//render the changes

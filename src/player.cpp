@@ -9,16 +9,16 @@
 Player::Player(const char* image_file, int x, int y, SDL_Renderer* renderer, double mass, double g_x, double g_y) 
 		: Object(image_file, x, y, mass, renderer), m_srcrect{new SDL_Rect} {
 
-	forward1 = SDL_CreateTextureFromSurface(renderer, surfaceFromFile("assets/ship_frames/only_forward1.bmp"));
+	forward1 = SDL_CreateTextureFromSurface(renderer, surfaceFromFile("assets/ship_frames/only_forward1.png"));
   assert(forward1 && "couldn't load f1");
 
-	forward2 = SDL_CreateTextureFromSurface(renderer, surfaceFromFile("assets/ship_frames/only_forward2.bmp"));
+	forward2 = SDL_CreateTextureFromSurface(renderer, surfaceFromFile("assets/ship_frames/only_forward2.png"));
   assert(forward2 && "couldn't load f2");
 
-	backward1 = SDL_CreateTextureFromSurface(renderer, surfaceFromFile("assets/ship_frames/only_backward1.bmp"));
+	backward1 = SDL_CreateTextureFromSurface(renderer, surfaceFromFile("assets/ship_frames/only_backward1.png"));
   assert(backward1 && "couldn't load b1");
 
-	backward2 = SDL_CreateTextureFromSurface(renderer, surfaceFromFile("assets/ship_frames/only_backward2.bmp"));
+	backward2 = SDL_CreateTextureFromSurface(renderer, surfaceFromFile("assets/ship_frames/only_backward2.png"));
   assert(backward2 && "couldn't load b2");
 
 	m_srcrect->w = 12;
@@ -103,13 +103,13 @@ void Player::accelerateByAngle(double angle, double magnitude) {
 }
 
 
-void Player::render(SDL_Renderer* renderer, bool &w_pressed, bool &s_pressed, int count) {
+void Player::render(SDL_Renderer* renderer, bool &w_pressed, bool &s_pressed, const bool& is_empty, int count) {
   //put count between 0 and 9 (inclusive)
   count%=10;
 
   std::cout << w_pressed << "," << s_pressed << "\n";
   //forward animation
-  if(w_pressed && !s_pressed) {
+  if(w_pressed && !s_pressed && !is_empty) {
     if(count<5)
 	    SDL_RenderCopyEx(renderer, forward1, m_srcrect, m_dstrect, m_angle, m_center, SDL_FLIP_NONE);
     else
@@ -117,7 +117,7 @@ void Player::render(SDL_Renderer* renderer, bool &w_pressed, bool &s_pressed, in
   }
 
   //backwards animation
-  else if(s_pressed && !w_pressed) {
+  else if(s_pressed && !w_pressed && !is_empty) {
     if(count<5)
 	    SDL_RenderCopyEx(renderer, backward1, m_srcrect, m_dstrect, m_angle, m_center, SDL_FLIP_NONE);
     else

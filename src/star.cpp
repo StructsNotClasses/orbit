@@ -14,8 +14,8 @@ Star::Star(const char* image_file, int x, int y, SDL_Renderer* renderer, double 
 
   //init frames of animation
 	m_frame1 = SDL_CreateTextureFromSurface(renderer, surfaceFromFile("assets/sun_frames/sun1.png"));
-	m_frame2 = SDL_CreateTextureFromSurface(renderer, surfaceFromFile("assets/sun_frames/sun2.bmp"));
-	m_frame3 = SDL_CreateTextureFromSurface(renderer, surfaceFromFile("assets/sun_frames/sun3.bmp"));
+	m_frame2 = SDL_CreateTextureFromSurface(renderer, surfaceFromFile("assets/sun_frames/sun2.png"));
+	m_frame3 = SDL_CreateTextureFromSurface(renderer, surfaceFromFile("assets/sun_frames/sun3.png"));
 }
 
 void Star::update() {

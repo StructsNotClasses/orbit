@@ -11,7 +11,7 @@ class Player : public Object {
     void accelerateSpin(double magnitude);
     void accelerateByAngle(double angle, double magnitude);
 
-    void render(SDL_Renderer* renderer, bool& w_pressed, bool& s_pressed, int count);
+    void render(SDL_Renderer* renderer, bool& w_pressed, bool& s_pressed, const bool& is_empty, int count);
 
     ~Player();
 
