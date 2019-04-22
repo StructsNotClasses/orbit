@@ -9,8 +9,6 @@
 constexpr int FRAMERATE{60};
 
 int main(int argc, char* args[]) {
-  Timer* timer = new Timer(7, 60, "~/../../usr/share/fonts/TTF/FiraCode-Medium.ttf");
-  timer->update(40);
 	//create main window
 	Game* main = new Game();
 

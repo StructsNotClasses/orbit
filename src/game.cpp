@@ -3,6 +3,7 @@
 #include <SDL2/SDL_ttf.h>
 #include "game.h" 
 #include "helpers.h"
+#include "timer.h"
 
 bool Game::init(double g_x, double g_y, double G) {
   count=0;
@@ -35,13 +36,15 @@ bool Game::init(double g_x, double g_y, double G) {
   //planets.push_back(new Planet(BARREN_ROCK, 271, 100, 10, 700, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 1));
 
   //check planets
-  for(const Planet* planet : planets) {
-    assert(planet && "failed to intialize a planet");
-  }
+  /*for(const Planet* planet : planets) {
+   assert(planet && "failed to intialize a planet");
+  }*/
 
   //create fuelbar
   fuel_bar = new FuelBar(SCREEN_WIDTH/2-600, SCREEN_HEIGHT-45, 1000, 1200, 40, renderer);
 
+  //create timer
+  timer = new Timer(7, 60, "/usr/share/fonts/TTF/ae_Electron.ttf", renderer);
 
 	return true;
 }
@@ -76,6 +79,7 @@ void Game::update() {
 	star->update();
 
   //update planets
+  std::cout << "0\n";
   for(Planet* current_planet : planets) {
     current_planet->pullTowardsObject(star, m_G);
     current_planet->pullTowardsObject(player,m_G);
@@ -94,6 +98,9 @@ void Game::update() {
   }
 
 	player->update();
+
+  //update the timer
+  timer->update(count);
 
 	//clear the window
 	if(SDL_RenderClear(renderer)) std::cout << SDL_GetError();
@@ -114,6 +121,9 @@ void Game::update() {
   //rendercopy the bar
   //SDL_FillRect(fuel_bar->bar_surface, NULL, SDL_MapRGB(fuel_bar->bar_surface->format, 055, 055, 055));
   fuel_bar->render(renderer);
+
+  //rendercopy the timer
+  timer->render(renderer);
 
 	//render the changes
 	SDL_RenderPresent(renderer);

@@ -31,6 +31,7 @@ Planet::Planet(planetType type, const int& angle_o, const double& mass, double g
     m_v_x *= -1;
     m_v_y *= -1;
   }
+  assert(fileFromType(type) && "eyet");
   m_srcrect->w = 9;
   m_srcrect->h = 9;
   m_srcrect->x = 12;
@@ -39,6 +40,8 @@ Planet::Planet(planetType type, const int& angle_o, const double& mass, double g
   m_dstrect->h = 20;
   m_dstrect->x = m_x - m_srcrect->w/2;
   m_dstrect->y = m_y - m_srcrect->h/2;
+  std::cout << m_x << " u " << m_y << "\n";
+  std::cout << m_dstrect->x << " u " << m_dstrect->y << "\n";
 }
 
 void Planet::update() {
