@@ -11,12 +11,11 @@ class Timer {
 
     ~Timer();
 
-    TTF_Font* font;
+    TTF_Font* m_font{NULL};
+    SDL_Surface* m_surface{NULL};
 
 
   private:
     int m_starting_time;
     char* current_time;
-
-
 };

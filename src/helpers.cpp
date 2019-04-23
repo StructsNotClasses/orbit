@@ -94,3 +94,12 @@ double* gravitationalAcceleration(double x1, double y1, double x2, double y2, do
 			return 0;
 	}
 }
+
+int lengthOfInteger(int intput) {
+  int digits{0};
+  while(intput) {
+    intput/=10;
+    digits+=1;
+  }
+  return digits;
+}

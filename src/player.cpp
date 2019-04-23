@@ -132,6 +132,6 @@ void Player::render(SDL_Renderer* renderer, bool &w_pressed, bool &s_pressed, co
 
 Player::~Player() {
   //delete members
-  m_srcrect->~SDL_Rect();
+  //m_srcrect->~SDL_Rect();
   Object::~Object();
 }
