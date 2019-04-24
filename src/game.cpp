@@ -25,26 +25,34 @@ bool Game::init(double g_x, double g_y, double G) {
 
 	//create player
 	player = new Player("assets/ship_frames/none.png", (SCREEN_WIDTH/2+400), (SCREEN_HEIGHT/2-400), renderer, 1, g_x, g_y);
+  assert(player && "player couldn't intialize");
 
 	//create star
 	star = new Star("assets/sun.bmp", (SCREEN_WIDTH/2), (SCREEN_HEIGHT/2), renderer, 1000);
+  assert(star && "star couldn't intialize");
 
   //create planets
   planets.push_back(new Planet(BARREN_ROCK, 170, 100, G, 500, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 0));
+  std::cout << planets[0] << "\n";
   planets.push_back(new Planet(BARREN_ROCK, 250, 100, G, 400, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 1));
-  //planets.push_back(new Planet(BARREN_ROCK, 271, 100, 10, 600, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 0));
-  //planets.push_back(new Planet(BARREN_ROCK, 271, 100, 10, 700, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 1));
+  std::cout << planets[1] << "\n";
+  planets.push_back(new Planet(BARREN_ROCK, 271, 100, G, 600, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 0));
+  std::cout << planets[2] << "\n";
+  planets.push_back(new Planet(BARREN_ROCK, 271, 100, G, 700, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 1));
+  std::cout << planets[3] << "\n";
 
   //check planets
-  /*for(const Planet* planet : planets) {
-   assert(planet && "failed to intialize a planet");
-  }*/
+
+  for(const Planet* planet : planets) {
+    assert(planet->m_srcrect && "failed to intialize a planet");
+  }
 
   //create fuelbar
   fuel_bar = new FuelBar(SCREEN_WIDTH/2-600, SCREEN_HEIGHT-45, 1000, 1200, 40, renderer);
 
   //create timer
-  timer = new Timer(7, 60, "/usr/share/fonts/TTF/ae_Electron.ttf", renderer);
+  timer = new Timer(28, 60, "/usr/share/fonts/TTF/FreeMono.ttf", renderer);
+  std::cout << "0\n";
 
 	return true;
 }
@@ -79,15 +87,14 @@ void Game::update() {
 	star->update();
 
   //update planets
-  std::cout << "0\n";
   for(Planet* current_planet : planets) {
     current_planet->pullTowardsObject(star, m_G);
     current_planet->pullTowardsObject(player,m_G);
-    /*for(Planet* other_current_planet : planets) {
+    for(Planet* other_current_planet : planets) {
       if(!(current_planet == other_current_planet)) {
         current_planet->pullTowardsObject(other_current_planet,m_G);
       }
-    }*/
+    }
     current_planet->update();
   }
 
@@ -100,7 +107,7 @@ void Game::update() {
 	player->update();
 
   //update the timer
-  timer->update(count);
+  timer->update(count, renderer);
 
 	//clear the window
 	if(SDL_RenderClear(renderer)) std::cout << SDL_GetError();
@@ -112,7 +119,8 @@ void Game::update() {
 
   //rendercopy the planets
   for(Planet* current_planet : planets) {
-    current_planet->render(renderer);
+    if(current_planet)
+      current_planet->render(renderer);
   }
 
 	//rendercopy the player

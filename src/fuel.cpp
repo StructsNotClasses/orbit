@@ -36,7 +36,7 @@ FuelBar::FuelBar(int x, int y, double capacity, double starting_width, double he
   //create the title stuff
   title_placement = new SDL_Rect;
 
-  title_placement->w = bar->w/5;
+  title_placement->w = bar->w/6;
   title_placement->h = bar->h;
   title_placement->x = bar->x+bar->w/2-title_placement->w/2;
   title_placement->y = bar->y;

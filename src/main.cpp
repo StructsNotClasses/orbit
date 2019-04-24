@@ -9,14 +9,13 @@
 constexpr int FRAMERATE{60};
 
 int main(int argc, char* args[]) {
+
 	//create main window
 	Game* main = new Game();
 
 	assert(main->init(0,0,4) && "Initialization Failed");
 
 	main->update();
-
-	assert(main->player && "player uninitialized");
 
 	//read input and change values based on it
 	SDL_Event event;

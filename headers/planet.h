@@ -13,7 +13,7 @@ class Planet : public Object {
 
     static double* getInitialValues(double star_c_x, double star_c_y, int angle, double mass, double g, double period);
 
-  Planet(planetType type, const int& angle_o, const double& mass, double g, const double& T_o, const double& star_centerx, const double& star_centery, const double& star_mass, SDL_Renderer* renderer, bool counter_clockwise);
+    Planet(planetType type, const int& angle_o, const double& mass, double g, const double& T_o, const double& star_centerx, const double& star_centery, const double& star_mass, SDL_Renderer* renderer, bool counter_clockwise);
 
     void accelerate(double x, double y);
 
@@ -22,8 +22,9 @@ class Planet : public Object {
 
     ~Planet();
 
+    SDL_Rect* m_srcrect;
+
 	private:
 		planetType m_type;
 		double m_T_intial;
-    SDL_Rect* m_srcrect;
 };

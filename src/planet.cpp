@@ -77,6 +77,7 @@ Planet::~Planet() {
 double* Planet::getInitialValues(double star_c_x, double star_c_y, int angle, double mass, double g, double period) {
   //get distance from sun's center
   const double& radius = std::cbrt((pow(period, 2)*g*mass)/(4*pow(M_PI, 2)));
+
   const double& velocity_tangential = radius*(360/period);
 
   if(angle<90) {

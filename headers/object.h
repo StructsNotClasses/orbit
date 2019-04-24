@@ -18,11 +18,11 @@ class Object {
     ~Object();
 
 	protected:
-		double m_x;
-		double m_y;
-		double m_v_x;
-		double m_v_y;
-		double m_m;
-		double m_a_x;
-		double m_a_y;
+    double m_x{0};
+    double m_y{0};
+    double m_v_x{0};
+    double m_v_y{0};
+    double m_m{0};
+    double m_a_x{0};
+    double m_a_y{0};
 };

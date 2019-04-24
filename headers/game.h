@@ -24,7 +24,7 @@ class Game {
 
 		Player* player{nullptr};
 		Star* star{nullptr};
-    std::vector<Planet*> planets{nullptr};
+    std::vector<Planet*> planets{};
     FuelBar* fuel_bar{nullptr};
     Timer* timer{nullptr};
 
