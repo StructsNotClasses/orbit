@@ -15,8 +15,11 @@ class Timer {
     SDL_Surface* m_surface{NULL};
     SDL_Texture* m_texture{NULL};
 
+    inline bool isEnded() {return timer_ended;}
+
 
   private:
+    bool timer_ended;
     int m_starting_time;
     char* current_time;
     SDL_Rect* m_dstrect;

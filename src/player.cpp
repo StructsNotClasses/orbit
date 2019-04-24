@@ -21,6 +21,7 @@ Player::Player(const char* image_file, int x, int y, SDL_Renderer* renderer, dou
 	backward2 = SDL_CreateTextureFromSurface(renderer, surfaceFromFile("assets/ship_frames/only_backward2.png"));
   assert(backward2 && "couldn't load b2");
 
+
 	m_srcrect->w = 12;
 	m_srcrect->h = 20;
 	m_srcrect->x = 4;
@@ -36,7 +37,8 @@ Player::Player(const char* image_file, int x, int y, SDL_Renderer* renderer, dou
 
 }
 
-void Player::update() {
+//will return 1 if the player is out of bounds and the timer ended
+bool Player::update() {
   //update the angle, ensure it stays within the 360 degree limit for convenience
   m_angle += m_angular_velocity;
   if(m_angle>=360) m_angle-=360;
@@ -49,11 +51,17 @@ void Player::update() {
   //update position based on velocity
 	m_x += m_v_x;
 	m_y += m_v_y;
-	wrap(SCREEN_WIDTH, SCREEN_HEIGHT, &m_x, &m_y);
+
+  //gameEndWrap returns 1 if out of bounds
+  if(endgame_active) if(gameEndWrap(SCREEN_WIDTH, SCREEN_HEIGHT, 5, &m_x, &m_y)) return 1;
+
+  wrap(SCREEN_WIDTH, SCREEN_HEIGHT, &m_x, &m_y);
 
   //make the renderering rect reflect position changes
 	m_dstrect->x = m_x;
 	m_dstrect->y = m_y;
+
+  return 0;
 }
 
 void Player::accelerate(double x, double y) {

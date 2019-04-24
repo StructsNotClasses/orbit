@@ -5,7 +5,7 @@ class Player : public Object {
 	public:
 		Player(const char* image_file, int x, int y, SDL_Renderer* renderer, double mass, double g_x=0, double g_y=0); 
 
-		void update();
+		bool update();
 
 		void accelerate(double x, double y);
     void accelerateSpin(double magnitude);
@@ -15,14 +15,22 @@ class Player : public Object {
 
     ~Player();
 
+  public:
 		SDL_Rect* m_srcrect{NULL};
     SDL_Point* m_center{NULL};
-    double m_angle;
-    double m_angular_velocity;
+
+    inline double* getAngle() {return &m_angle;}
+    inline void setEndgame(bool value) {endgame_active=value;}
+
   private:
     SDL_Texture* forward1{NULL};
     SDL_Texture* forward2{NULL};
     SDL_Texture* backward1{NULL};
     SDL_Texture* backward2{NULL};
+
+    double m_angle;
+    double m_angular_velocity;
+
+    bool endgame_active;
 };
 

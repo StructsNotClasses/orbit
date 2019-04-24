@@ -36,10 +36,10 @@ bool Game::init(double g_x, double g_y, double G) {
   std::cout << planets[0] << "\n";
   planets.push_back(new Planet(BARREN_ROCK, 250, 100, G, 400, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 1));
   std::cout << planets[1] << "\n";
-  planets.push_back(new Planet(BARREN_ROCK, 271, 100, G, 600, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 0));
-  std::cout << planets[2] << "\n";
-  planets.push_back(new Planet(BARREN_ROCK, 271, 100, G, 700, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 1));
-  std::cout << planets[3] << "\n";
+  //planets.push_back(new Planet(BARREN_ROCK, 271, 100, G, 600, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 0));
+  //std::cout << planets[2] << "\n";
+  //planets.push_back(new Planet(BARREN_ROCK, 271, 100, G, 700, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 1));
+  //std::cout << planets[3] << "\n";
 
   //check planets
 
@@ -51,7 +51,7 @@ bool Game::init(double g_x, double g_y, double G) {
   fuel_bar = new FuelBar(SCREEN_WIDTH/2-600, SCREEN_HEIGHT-45, 1000, 1200, 40, renderer);
 
   //create timer
-  timer = new Timer(28, 60, "/usr/share/fonts/TTF/FreeMono.ttf", renderer);
+  timer = new Timer(28, 10, "/usr/share/fonts/TTF/ae_Electron.ttf", renderer);
   std::cout << "0\n";
 
 	return true;
@@ -65,11 +65,11 @@ void Game::update() {
   //apply player movement
   if(!fuel_bar->isEmpty()) {
     if(w_pressed) {
-      player->accelerateByAngle(player->m_angle, .10);
+      player->accelerateByAngle(*(player->getAngle()), .10);
       fuel_bar->update(-1);
     }
     if(s_pressed) {
-      player->accelerateByAngle(player->m_angle, -.10);
+      player->accelerateByAngle(*(player->getAngle()), -.10);
       fuel_bar->update(-1);
     }
     if(a_pressed) {
@@ -81,7 +81,7 @@ void Game::update() {
       fuel_bar->update(-1);
     }
   }
-  std::cout << "angle is " << player->m_angle << "\n";
+  std::cout << "angle is " << *(player->getAngle()) << "\n";
 
 	//animate sun
 	star->update();
@@ -99,13 +99,16 @@ void Game::update() {
     current_planet->update();
   }
 
+  //set "endgame mode"
+  if(timer->isEnded()) player->setEndgame(1);
+
   //update player
   player->pullTowardsObject(star, m_G);
   for(Planet* current_planet : planets) {
     player->pullTowardsObject(current_planet, m_G);
   }
 
-	player->update();
+	if(player->update()) endSession();
 
   //update the timer
   timer->update(count, renderer);
@@ -181,6 +184,11 @@ bool Game::event(SDL_Event* event) {
 	return true;
 }
 
+void Game::endSession() {
+  std::cout << "lol\n";
+  char* lol{nullptr};
+  std::cout << *lol;
+}
 
 void Game::quit() {
   player->~Player();

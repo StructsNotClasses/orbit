@@ -15,7 +15,6 @@ SDL_Surface* surfaceFromFile(const char* file) {
 	return_surface = SDL_ConvertSurfaceFormat(tmp_surface, SDL_PIXELFORMAT_RGBA5551, 0);
 	SDL_FreeSurface(tmp_surface);
   */
-	
 	return return_surface;
 }
 
@@ -46,6 +45,15 @@ void wrap(int s_x, int s_y, double *o_x, double *o_y) {
 	if(*o_x > s_x) *o_x = -2 * half_width;
 	if(*o_y < -2 * half_width) *o_y = s_y;
 	if(*o_y > s_y) *o_y = -2 * half_width;
+}
+
+bool gameEndWrap(int s_x, int s_y, int buffer, double *o_x, double *o_y) {
+	if(*o_x < -2 * half_width+buffer) return 1;
+	if(*o_x > s_x-buffer)             return 1;
+	if(*o_y < -2 * half_width+buffer) return 1;
+	if(*o_y > s_y-buffer)             return 1;
+
+  return 0;
 }
 
 //returns the distance between two objects, may not need this for a while

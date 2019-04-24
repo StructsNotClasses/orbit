@@ -22,12 +22,17 @@ void Timer::update(int count, SDL_Renderer* renderer) {
 
   count = m_starting_time - count;
 
+  if(count <= 0){
+    count = 0;
+    timer_ended = 1;
+  }
+
   sprintf(current_time, "%d", count);
+
+  if(count < 10) m_dstrect->w = 50;
 
   SDL_Color tmp{255, 0, 0, 255};
 
-  std::cout << TTF_FontHeight(m_font) << " lol \n";
-  std::cout << count << " yeet \n";
   m_surface = TTF_RenderText_Solid(m_font, current_time, tmp);
   m_texture = SDL_CreateTextureFromSurface(renderer, m_surface);
 }

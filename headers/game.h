@@ -19,6 +19,8 @@ class Game {
 		void update();
 		void quit();
 
+    void endSession();
+
 		SDL_Window* game_window{NULL};
 		SDL_Renderer* renderer{NULL};
 
@@ -29,10 +31,10 @@ class Game {
     Timer* timer{nullptr};
 
     //an easy way to manage better animations
-    int count;
 
 	private:
 
+    int count;
 		bool w_pressed{0};
 		bool s_pressed{0};
 		bool a_pressed{0};
