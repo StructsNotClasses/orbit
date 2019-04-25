@@ -35,3 +35,9 @@ void Timer::update(int count, SDL_Renderer* renderer) {
 void Timer::render(SDL_Renderer* renderer) {
   SDL_RenderCopy(renderer, m_texture, NULL, m_dstrect);
 }
+
+Timer::~Timer() {
+  TTF_CloseFont(m_font);
+  SDL_FreeSurface(m_surface);
+  SDL_DestroyTexture(m_texture);
+}

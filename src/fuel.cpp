@@ -70,4 +70,7 @@ void FuelBar::render(SDL_Renderer* renderer) {
 
 FuelBar::~FuelBar() {
   SDL_FreeSurface(bar_surface);
+  SDL_DestroyTexture(bar_texture);
+  bar->~SDL_Rect();
+  title_placement->~SDL_Rect();
 }

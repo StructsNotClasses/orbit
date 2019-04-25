@@ -90,11 +90,12 @@ void Game::update() {
   for(Planet* current_planet : planets) {
     current_planet->pullTowardsObject(star, m_G);
     current_planet->pullTowardsObject(player,m_G);
+    /*
     for(Planet* other_current_planet : planets) {
-      if(!(current_planet == other_current_planet)) {
+      if(!(current_planet == other_current_planet))
         current_planet->pullTowardsObject(other_current_planet,m_G);
-      }
     }
+    */
     current_planet->update();
   }
 
@@ -111,6 +112,9 @@ void Game::update() {
 
 	//clear the window
 	if(SDL_RenderClear(renderer)) std::cout << SDL_GetError();
+
+  //rendercopy the timer
+  timer->render(renderer);
 
 	//background image
 	//
@@ -130,8 +134,6 @@ void Game::update() {
   //SDL_FillRect(fuel_bar->bar_surface, NULL, SDL_MapRGB(fuel_bar->bar_surface->format, 055, 055, 055));
   fuel_bar->render(renderer);
 
-  //rendercopy the timer
-  timer->render(renderer);
 
 	//render the changes
 	SDL_RenderPresent(renderer);
@@ -188,6 +190,10 @@ void Game::quit() {
   for(Planet* current_planet : planets) {
     current_planet->~Planet();
   }
+
+  fuel_bar->~FuelBar();
+
+  timer->~Timer();
 
 	SDL_DestroyWindow(game_window);
   SDL_DestroyRenderer(renderer);
