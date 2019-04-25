@@ -51,7 +51,7 @@ bool Game::init(double g_x, double g_y, double G) {
   fuel_bar = new FuelBar(SCREEN_WIDTH/2-600, SCREEN_HEIGHT-45, 1000, 1200, 40, renderer);
 
   //create timer
-  timer = new Timer(28, 10, "/usr/share/fonts/TTF/ae_Electron.ttf", renderer);
+  timer = new Timer(28, 10, "/usr/share/fonts/TTF/FiraCode-Medium.ttf", renderer);
   std::cout << "0\n";
 
 	return true;

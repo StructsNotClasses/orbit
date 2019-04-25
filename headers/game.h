@@ -40,6 +40,9 @@ class Game {
 		bool a_pressed{0};
 		bool d_pressed{0};
 
+  SDL_Texture* black_background{NULL};
+  SDL_Rect* background_rect{NULL};
+
     double m_G;
 };
 
