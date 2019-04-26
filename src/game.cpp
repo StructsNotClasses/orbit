@@ -1,7 +1,7 @@
 #include <iostream>
 #include <assert.h>
 #include <SDL2/SDL_ttf.h>
-#include "game.h" 
+#include "game.h"
 #include "helpers.h"
 #include "timer.h"
 
@@ -23,9 +23,24 @@ bool Game::init(double g_x, double g_y, double G) {
 	//render starting frame
 	SDL_RenderPresent(renderer);
 
+  //create background
+  SDL_Surface* tmp = surfaceFromFile("assets/blank_image.png");
+  background_rect = new SDL_Rect;
+  background_rect->x = 5;
+  background_rect->y = 5;
+  background_rect->w = SCREEN_WIDTH-10;
+  background_rect->h = SCREEN_HEIGHT-10;
+
+  black_background = SDL_CreateTextureFromSurface(renderer, tmp);
+  SDL_SetTextureColorMod(black_background, 0, 0, 0);
+
+  SDL_FreeSurface(tmp);
+
+
 	//create player
 	player = new Player("assets/ship_frames/none.png", (SCREEN_WIDTH/2+400), (SCREEN_HEIGHT/2-400), renderer, 1, g_x, g_y);
   assert(player && "player couldn't intialize");
+  std::cout << player << "\n";
 
 	//create star
 	star = new Star("assets/sun.bmp", (SCREEN_WIDTH/2), (SCREEN_HEIGHT/2), renderer, 1000);
@@ -42,7 +57,6 @@ bool Game::init(double g_x, double g_y, double G) {
   //std::cout << planets[3] << "\n";
 
   //check planets
-
   for(const Planet* planet : planets) {
     assert(planet->m_srcrect && "failed to intialize a planet");
   }
@@ -100,7 +114,10 @@ void Game::update() {
   }
 
   //set "endgame mode"
-  if(timer->isEnded()) player->setEndgame(1);
+  if(timer->isEnded()) {
+    player->setEndgame(1);
+    SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+  }
 
   //update player
   player->pullTowardsObject(star, m_G);
@@ -115,6 +132,9 @@ void Game::update() {
 
 	//clear the window
 	if(SDL_RenderClear(renderer)) std::cout << SDL_GetError();
+
+  //rendercopy the background
+  SDL_RenderCopy(renderer, black_background, NULL, background_rect);
 
   //rendercopy the timer
   timer->render(renderer);

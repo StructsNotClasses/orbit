@@ -28,8 +28,8 @@ class Player : public Object {
     SDL_Texture* backward1{NULL};
     SDL_Texture* backward2{NULL};
 
-    double m_angle;
-    double m_angular_velocity;
+    double m_angle{0};
+    double m_angular_velocity{0};
 
     bool endgame_active;
 };

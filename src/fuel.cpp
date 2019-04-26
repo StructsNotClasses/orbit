@@ -72,5 +72,7 @@ FuelBar::~FuelBar() {
   SDL_FreeSurface(bar_surface);
   SDL_DestroyTexture(bar_texture);
   bar->~SDL_Rect();
+  SDL_FreeSurface(title_surface);
+  SDL_DestroyTexture(bar_texture);
   title_placement->~SDL_Rect();
 }
