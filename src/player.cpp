@@ -25,7 +25,8 @@ Player::Player(const char* image_file, int x, int y, SDL_Renderer* renderer, dou
 	m_srcrect->w = 12;
 	m_srcrect->h = 20;
 	m_srcrect->x = 4;
-	m_srcrect->y = 2; m_dstrect->w = 20;
+	m_srcrect->y = 2;
+  m_dstrect->w = 20;
 	m_dstrect->h = 30;
 	m_dstrect->x = m_x;
 	m_dstrect->y = m_y;
@@ -110,6 +111,15 @@ void Player::accelerateByAngle(double angle, double magnitude) {
   std::cout << "vx, vy: " << m_v_x << ", " << m_v_y << "\n";
 }
 
+void Player::resetValues(int x, int y, int v_x, int v_y) {
+  m_x = x;
+  m_y = y;
+  m_v_x = v_x;
+  m_v_y = v_y;
+  m_dstrect->x = m_x;
+  m_dstrect->y = m_y;
+  endgame_active=0;
+}
 
 void Player::render(SDL_Renderer* renderer, bool &w_pressed, bool &s_pressed, const bool& is_empty, int count) {
   //put count between 0 and 9 (inclusive)

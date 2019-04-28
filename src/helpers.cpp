@@ -111,3 +111,7 @@ int lengthOfInteger(int intput) {
   }
   return digits;
 }
+
+int getRandomNumber(int min, int max) {
+  return rand() % ((min + max)?(min+max):1);
+}

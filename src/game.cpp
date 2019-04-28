@@ -6,6 +6,7 @@
 #include "timer.h"
 
 bool Game::init(double g_x, double g_y, double G) {
+  std::cout << getRandomNumber(0, 10);
   count=0;
   m_G=G;
 	if(SDL_Init(SDL_INIT_EVERYTHING) < 0) return false;
@@ -71,6 +72,58 @@ bool Game::init(double g_x, double g_y, double G) {
 	return true;
 }
 
+void Game::newSystem(double g_x, double g_y, double G) {
+  m_G = G;
+  count=0;
+  fuel_bar->fill();
+
+
+	//set draw color
+	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+
+	//reset player
+  player->resetValues(600, 200, 2, 2);
+
+	//reset star
+  star->~Star();
+	star = new Star("assets/sun.bmp", (SCREEN_WIDTH/2), (SCREEN_HEIGHT/2), renderer, 1000);
+  assert(star && "star couldn't reset");
+
+  //clear planets
+  for(Planet* current_planet : planets) {
+    current_planet->~Planet();
+  }
+  planets.clear();
+
+  //create planets
+  planets.push_back(new Planet(BARREN_ROCK, 170, 100, m_G, 500, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 0));
+  std::cout << planets[0] << "\n";
+  planets.push_back(new Planet(BARREN_ROCK, 250, 100, m_G, 400, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 1));
+  std::cout << planets[1] << "\n";
+  //planets.push_back(new Planet(BARREN_ROCK, 271, 100, G, 600, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 0));
+  //std::cout << planets[2] << "\n";
+  //planets.push_back(new Planet(BARREN_ROCK, 271, 100, G, 700, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 1));
+  //std::cout << planets[3] << "\n";
+
+  //check new planets
+  for(const Planet* planet : planets) {
+    assert(planet->m_srcrect && "failed to reset a planet");
+  }
+
+  //clear fuelbar
+  fuel_bar->~FuelBar();
+
+  //create fuelbar
+  fuel_bar = new FuelBar(SCREEN_WIDTH/2-600, SCREEN_HEIGHT-45, 1000, 1200, 40, renderer);
+
+
+  //clear timer
+  timer->~Timer();
+
+  //create timer
+  timer = new Timer(28, 10, "/usr/share/fonts/TTF/FiraCode-Medium.ttf", renderer);
+}
+
 void Game::update() {
   //overflow, though unlikely, could occur
   if(count<0)count=0;
@@ -96,9 +149,6 @@ void Game::update() {
     }
   }
   std::cout << "angle is " << *(player->getAngle()) << "\n";
-
-	//animate sun
-	star->update();
 
   //update planets
   for(Planet* current_planet : planets) {
@@ -181,7 +231,11 @@ bool Game::event(SDL_Event* event) {
 				case SDLK_d:
 					d_pressed = 1;
 					break;
-			}
+
+        case SDLK_r:
+          newSystem(0, 0, 3);
+
+        }
 			break;
 		case SDL_KEYUP:
 			std::cout << SDL_GetKeyName(event->key.keysym.sym) << " was released lol\n";

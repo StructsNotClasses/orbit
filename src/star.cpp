@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <iostream>
 Star::Star(const char* image_file, int x, int y, SDL_Renderer* renderer, double mass)
-  : Object(image_file, x, y, mass, renderer), frame{0} {
+  : Object(image_file, x, y, mass, renderer) {
 	m_dstrect->w = 50;
 	m_dstrect->h = 50;
 	m_dstrect->x = x - 25;
@@ -16,10 +16,6 @@ Star::Star(const char* image_file, int x, int y, SDL_Renderer* renderer, double 
 	m_frame1 = SDL_CreateTextureFromSurface(renderer, surfaceFromFile("assets/sun_frames/sun1.png"));
 	m_frame2 = SDL_CreateTextureFromSurface(renderer, surfaceFromFile("assets/sun_frames/sun2.png"));
 	m_frame3 = SDL_CreateTextureFromSurface(renderer, surfaceFromFile("assets/sun_frames/sun3.png"));
-}
-
-void Star::update() {
-	frame=!frame;
 }
 
 void Star::render(SDL_Renderer* renderer, int count) {

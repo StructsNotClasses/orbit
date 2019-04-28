@@ -1,5 +1,5 @@
 CC=clang++
-CFLAGS=-Wall -g -v
+CFLAGS=-Wall -g 
 LINKERS=-lSDL2 -lSDL2_image -lSDL2_ttf -lm -std=c++11
 INCLUDE= -I headers
 DEPS=object.h input.h game.h helpers.h player.h object.h star.h fuel.h timer.h

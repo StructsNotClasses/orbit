@@ -9,6 +9,8 @@
 constexpr int FRAMERATE{60};
 
 int main(int argc, char* args[]) {
+  std::cout << "ll";
+  srand(time(NULL));
 
 	//create main window
 	Game* main = new Game();

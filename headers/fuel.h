@@ -6,10 +6,11 @@ class FuelBar {
   public:
     FuelBar(int x, int y, double capacity, double starting_width, double height, SDL_Renderer* renderer);
 
+    void fill() {m_amount = m_capacity;};
     void update(double increment);
     void render(SDL_Renderer* renderer);
 
-  bool isEmpty() {return !(m_amount>0);};
+    bool isEmpty() {return !(m_amount>0);};
 
     ~FuelBar();
 
