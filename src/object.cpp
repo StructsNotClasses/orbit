@@ -21,9 +21,6 @@ Object::Object(const char* image_file, double star_centerx, double star_centery,
   //const double& T_o = 2*M_PI*(std::sqrt((radius*radius*radius)/(g*star_mass)));
   //const double& velocity_tangential = radius*(360/period); //good
   const double& velocity_tangential = std::sqrt(g*star_mass/radius);
-  std::cout << " radius " << radius << " vt " << velocity_tangential << '\n';
-  std::cout << "xstar " << star_centerx << " ystar " << star_centery << "\n";
-  std::cout << "angle " << angle << "\n";
 
   //set starting coordinates and velocity based on angle
   if(angle<=90) {

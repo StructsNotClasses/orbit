@@ -16,7 +16,7 @@ const uint32_t B_MASK = 0x00ff0000;
 */
 
 FuelBar::FuelBar(int x, int y, double capacity, double starting_width, double height, SDL_Renderer* renderer)
-  : m_x(x), m_y(y), m_capacity(capacity), m_amount(capacity), m_width(starting_width), m_height(height), m_starting_width(starting_width) {
+  : m_x(x), m_y(y), m_capacity(capacity), m_amount(capacity), m_starting_width(starting_width) {
 
   //create the bar's stuff 
   bar = new SDL_Rect;
@@ -56,7 +56,6 @@ void FuelBar::update(double increment) {
   double rgbval = 255*m_amount/m_capacity;
 
   if(rgbval>0) SDL_SetTextureColorMod(bar_texture, 255-rgbval, rgbval, 0);
-  std::cout << m_amount << "\n";
 
   bar->w = m_starting_width*(m_amount/m_capacity);
 

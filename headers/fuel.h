@@ -26,7 +26,5 @@ class FuelBar {
     int m_y;
     double m_capacity;
     double m_amount;
-    double m_width;
-    double m_height;
     double m_starting_width;
 };

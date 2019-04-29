@@ -9,15 +9,12 @@
 constexpr int FRAMERATE{60};
 
 int main(int argc, char* args[]) {
-  std::cout << "ll";
   srand(time(NULL));
 
 	//create main window
 	Game* main = new Game();
 
 	assert(main->init(0,0,4) && "Initialization Failed");
-
-	main->update();
 
 	//read input and change values based on it
 	SDL_Event event;
@@ -26,7 +23,7 @@ int main(int argc, char* args[]) {
 		while(SDL_PollEvent(&event)) {
 			running = main->event(&event);
 		}
-		main->update();
+		main->update(running);
 		SDL_Delay(1000/FRAMERATE);
 	}
 

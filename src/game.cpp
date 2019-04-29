@@ -6,14 +6,13 @@
 #include "timer.h"
 
 bool Game::init(double g_x, double g_y, double G) {
-  std::cout << getRandomNumber(0, 10);
   count=0;
   m_G=G;
 	if(SDL_Init(SDL_INIT_EVERYTHING) < 0) return false;
   if(TTF_Init() < 0) return false;
 
 	//create main window
-	game_window = SDL_CreateWindow("yow", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+	game_window = SDL_CreateWindow("orbit", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 
 	if(game_window == NULL) return false;
 
@@ -41,7 +40,6 @@ bool Game::init(double g_x, double g_y, double G) {
 	//create player
 	player = new Player("assets/ship_frames/none.png", (SCREEN_WIDTH/2+400), (SCREEN_HEIGHT/2-400), renderer, 1, g_x, g_y);
   assert(player && "player couldn't intialize");
-  std::cout << player << "\n";
 
 	//create star
 	star = new Star("assets/sun.bmp", (SCREEN_WIDTH/2), (SCREEN_HEIGHT/2), renderer, 1000);
@@ -49,9 +47,7 @@ bool Game::init(double g_x, double g_y, double G) {
 
   //create planets
   planets.push_back(new Planet(BARREN_ROCK, 170, 100, G, 500, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 0));
-  std::cout << planets[0] << "\n";
   planets.push_back(new Planet(BARREN_ROCK, 250, 100, G, 400, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 1));
-  std::cout << planets[1] << "\n";
   //planets.push_back(new Planet(BARREN_ROCK, 271, 100, G, 600, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 0));
   //std::cout << planets[2] << "\n";
   //planets.push_back(new Planet(BARREN_ROCK, 271, 100, G, 700, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 1));
@@ -67,22 +63,17 @@ bool Game::init(double g_x, double g_y, double G) {
 
   //create timer
   timer = new Timer(28, 10, "/usr/share/fonts/TTF/FiraCode-Medium.ttf", renderer);
-  std::cout << "0\n";
 
 	return true;
 }
 
-void Game::newSystem(double g_x, double g_y, double G) {
-  m_G = G;
+void Game::newSystem(double g_x, double g_y) {
+  m_G = getRandomNumber(2, 6);
   count=0;
-  fuel_bar->fill();
-
 
 	//set draw color
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
-	//reset player
-  player->resetValues(600, 200, 2, 2);
 
 	//reset star
   star->~Star();
@@ -96,10 +87,9 @@ void Game::newSystem(double g_x, double g_y, double G) {
   planets.clear();
 
   //create planets
-  planets.push_back(new Planet(BARREN_ROCK, 170, 100, m_G, 500, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 0));
-  std::cout << planets[0] << "\n";
-  planets.push_back(new Planet(BARREN_ROCK, 250, 100, m_G, 400, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 1));
-  std::cout << planets[1] << "\n";
+  bool counter_clockwise{static_cast<bool>(getRandomNumber(0,2))};
+  planets.push_back(new Planet(BARREN_ROCK, getRandomNumber(0, 360), 100, m_G, getRandomNumber(100, 500), SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, counter_clockwise));
+  planets.push_back(new Planet(BARREN_ROCK, getRandomNumber(0, 360), 100, m_G, getRandomNumber(100, 500), SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, getRandomNumber(0,2)*counter_clockwise));
   //planets.push_back(new Planet(BARREN_ROCK, 271, 100, G, 600, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 0));
   //std::cout << planets[2] << "\n";
   //planets.push_back(new Planet(BARREN_ROCK, 271, 100, G, 700, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 1));
@@ -110,21 +100,27 @@ void Game::newSystem(double g_x, double g_y, double G) {
     assert(planet->m_srcrect && "failed to reset a planet");
   }
 
+	//reset player based on planet movement
+  int starting_velocity{static_cast<int>(m_G)*getRandomNumber(1, 3)};
+  if(counter_clockwise)
+    player->resetValues(1360, 590, 0, starting_velocity);
+  else
+    player->resetValues(1360, 590, 0, -starting_velocity);
+
   //clear fuelbar
   fuel_bar->~FuelBar();
 
   //create fuelbar
-  fuel_bar = new FuelBar(SCREEN_WIDTH/2-600, SCREEN_HEIGHT-45, 1000, 1200, 40, renderer);
-
+  fuel_bar = new FuelBar(SCREEN_WIDTH/2-600, SCREEN_HEIGHT-45, starting_velocity*1.25, 1200, 40, renderer);
 
   //clear timer
   timer->~Timer();
 
   //create timer
-  timer = new Timer(28, 10, "/usr/share/fonts/TTF/FiraCode-Medium.ttf", renderer);
+  timer = new Timer(28, starting_velocity*2, "/usr/share/fonts/TTF/FiraCode-Medium.ttf", renderer);
 }
 
-void Game::update() {
+void Game::update(bool& running) {
   //overflow, though unlikely, could occur
   if(count<0)count=0;
   count+=1;
@@ -132,23 +128,22 @@ void Game::update() {
   //apply player movement
   if(!fuel_bar->isEmpty()) {
     if(w_pressed) {
-      player->accelerateByAngle(*(player->getAngle()), .10);
-      fuel_bar->update(-1);
+      player->accelerateByAngle(*(player->getAngle()), .20);
+      fuel_bar->update(-.25);
     }
     if(s_pressed) {
-      player->accelerateByAngle(*(player->getAngle()), -.10);
-      fuel_bar->update(-1);
+      player->accelerateByAngle(*(player->getAngle()), -.20);
+      fuel_bar->update(-.25);
     }
     if(a_pressed) {
-      player->accelerateSpin(-.10);
-      fuel_bar->update(-1);
+      player->accelerateSpin(-.20);
+      fuel_bar->update(-.0);
     }
     if(d_pressed) {
-      player->accelerateSpin(.10);
-      fuel_bar->update(-1);
+      player->accelerateSpin(.20);
+      fuel_bar->update(-.0);
     }
   }
-  std::cout << "angle is " << *(player->getAngle()) << "\n";
 
   //update planets
   for(Planet* current_planet : planets) {
@@ -167,6 +162,14 @@ void Game::update() {
   if(timer->isEnded()) {
     player->setEndgame(1);
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+  }
+  if(timer->isNTen()) {
+    for(int i=0; i < 20; i++)
+      std::cout << "\n";
+    std::cout << "You won! Congratulations.\n";
+    for(int i=0; i < 2; i++)
+      std::cout << "\n";
+    running = 0;
   }
 
   //update player
@@ -233,12 +236,12 @@ bool Game::event(SDL_Event* event) {
 					break;
 
         case SDLK_r:
-          newSystem(0, 0, 3);
+          newSystem(0, 0);
 
         }
 			break;
 		case SDL_KEYUP:
-			std::cout << SDL_GetKeyName(event->key.keysym.sym) << " was released lol\n";
+			std::cout << SDL_GetKeyName(event->key.keysym.sym) << " was released\n";
 			switch(event->key.keysym.sym) {
 				case SDLK_w:
 					w_pressed=0;
@@ -259,9 +262,7 @@ bool Game::event(SDL_Event* event) {
 }
 
 void Game::endSession() {
-  std::cout << "lol\n";
-  char* lol{nullptr};
-  std::cout << *lol;
+  newSystem(0,0);
 }
 
 void Game::quit() {

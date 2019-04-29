@@ -18,8 +18,6 @@ Planet::Planet(planetType type, int x_o, int y_o, SDL_Renderer* renderer, double
   m_dstrect->h = 20;
   m_dstrect->x = x_o - m_srcrect->w/2;
   m_dstrect->y = y_o - m_srcrect->h/2;
-  std::cout << m_x << " u " << m_y << "\n";
-  std::cout << m_dstrect->x << " u " << m_dstrect->y << "\n";
   m_v_x = v_x_o;
   m_v_y = v_y_o;
 }
@@ -40,8 +38,6 @@ Planet::Planet(planetType type, const int& angle_o, const double& mass, double g
   m_dstrect->h = 20;
   m_dstrect->x = m_x - m_srcrect->w/2;
   m_dstrect->y = m_y - m_srcrect->h/2;
-  std::cout << m_x << " u " << m_y << "\n";
-  std::cout << m_dstrect->x << " u " << m_dstrect->y << "\n";
 }
 
 void Planet::update() {

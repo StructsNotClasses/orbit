@@ -82,33 +82,23 @@ void Player::accelerateSpin(double magnitude) {
 }
 
 void Player::accelerateByAngle(double angle, double magnitude) {
-  std::cout << "angle is " << angle << "\n";
   //set starting coordinates and velocity based on angle
   if(angle<=90) {
-    std::cout << "quadrant 1\n";
     m_v_x += sin(angle*(M_PI/180)) * magnitude;
     m_v_y -= cos(angle*(M_PI/180)) * magnitude;
-    std::cout << "x: " << cos(angle*(M_PI/180)) * magnitude << "\n";
-    std::cout << "y: " << sin(angle*(M_PI/180)) * magnitude << "\n";
   }
   else if(angle<=180) {
-    std::cout << "quadrant 2\n";
     m_v_x += cos((angle-90)*(M_PI/180)) * magnitude;
     m_v_y += sin((angle-90)*(M_PI/180)) * magnitude;
   }
   else if(angle<=270) {
-    std::cout << "quadrant 3\n";
     m_v_x -= sin((angle-180)*(M_PI/180)) * magnitude;
     m_v_y += cos((angle-180)*(M_PI/180)) * magnitude;
   }
   else {
-    std::cout << "quadrant 4\n";
     m_v_x -= cos((angle-270)*(M_PI/180)) * magnitude;
     m_v_y -= sin((angle-270)*(M_PI/180)) * magnitude;
-    std::cout << "x: " << cos((angle-270)*(M_PI/180)) * magnitude << "\n";
-    std::cout << "y: " << sin((angle-270)*(M_PI/180)) * magnitude << "\n";
   }
-  std::cout << "vx, vy: " << m_v_x << ", " << m_v_y << "\n";
 }
 
 void Player::resetValues(int x, int y, int v_x, int v_y) {
@@ -118,6 +108,8 @@ void Player::resetValues(int x, int y, int v_x, int v_y) {
   m_v_y = v_y;
   m_dstrect->x = m_x;
   m_dstrect->y = m_y;
+  m_angle = 0;
+  m_angular_velocity = 0;
   endgame_active=0;
 }
 
@@ -125,7 +117,6 @@ void Player::render(SDL_Renderer* renderer, bool &w_pressed, bool &s_pressed, co
   //put count between 0 and 9 (inclusive)
   count%=10;
 
-  std::cout << w_pressed << "," << s_pressed << "\n";
   //forward animation
   if(w_pressed && !s_pressed && !is_empty) {
     if(count<5)
@@ -145,7 +136,6 @@ void Player::render(SDL_Renderer* renderer, bool &w_pressed, bool &s_pressed, co
   else {
 	  SDL_RenderCopyEx(renderer, m_texture, m_srcrect, m_dstrect, m_angle, m_center, SDL_FLIP_NONE);
   }
-  std::cout << "\n";
 }
 
 Player::~Player() {

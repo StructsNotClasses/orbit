@@ -85,20 +85,19 @@ double* gravitationalAcceleration(double x1, double y1, double x2, double y2, do
 	//returns a double* with x as first index and y as second index
 	double angle{0};
 	switch(quadrant) {
-		case 1: 
+		case 1:
 			angle=(atan((x2-x1)/(y1-y2))); 
 			return new double[2] {-1*(sin(angle)*force),cos(angle)*force};
-		case 2: 
+		case 2:
 			angle=(atan((y2-y1)/(x2-x1))); 
 			return new double[2] {-1*(cos(angle)*force),-1*(sin(angle)*force)};
-		case 3: 
+		case 3:
 			angle=(atan((x2-x1)/(y1-y2))); 
 			return new double[2] {sin(angle)*force,-1*(cos(angle)*force)};
-		case 4: 
+		case 4:
 			angle=(atan((y1-y2)/(x1-x2))); 
 			return new double[2] {cos(angle)*force,sin(angle)*force};
 		default:
-      assert(!(quadrant==-1) && "Something is very wrong, perhaps a coordinate is null or something");
 			return 0;
 	}
 }

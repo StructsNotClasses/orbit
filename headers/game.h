@@ -16,8 +16,8 @@ class Game {
 	public:
     bool init(double g_x=0, double g_y=0, double G = 1);
 		bool event(SDL_Event* event);
-    void newSystem(double g_x=0, double g_y=0, double G = 1);
-		void update();
+    void newSystem(double g_x=0, double g_y=0);
+		void update(bool& running);
 		void quit();
 
     void endSession();

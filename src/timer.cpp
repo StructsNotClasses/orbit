@@ -23,8 +23,10 @@ void Timer::update(int count, SDL_Renderer* renderer) {
   count = m_starting_time - count;
 
   if(count <= 0){
-    count = 0;
     timer_ended = 1;
+  }
+  if(count <= -10) {
+    negative_ten = 1;
   }
 
   sprintf(current_time, "%d", count);
