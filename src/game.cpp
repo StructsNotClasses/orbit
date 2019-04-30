@@ -68,7 +68,8 @@ bool Game::init(double g_x, double g_y, double G) {
 }
 
 void Game::newSystem(double g_x, double g_y) {
-  m_G = getRandomNumber(2, 6);
+  //m_G will be the seed
+  m_G = getRandomNumber(2, 8);
   count=0;
 
 	//set draw color
@@ -88,8 +89,8 @@ void Game::newSystem(double g_x, double g_y) {
 
   //create planets
   bool counter_clockwise{static_cast<bool>(getRandomNumber(0,2))};
-  planets.push_back(new Planet(BARREN_ROCK, getRandomNumber(0, 360), 100, m_G, getRandomNumber(100, 500), SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, counter_clockwise));
-  planets.push_back(new Planet(BARREN_ROCK, getRandomNumber(0, 360), 100, m_G, getRandomNumber(100, 500), SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, getRandomNumber(0,2)*counter_clockwise));
+  planets.push_back(new Planet(BARREN_ROCK, m_G * 50 + getRandomNumber(-50, 150), 100, m_G, getRandomNumber(100, 500), SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, counter_clockwise));
+  planets.push_back(new Planet(BARREN_ROCK, m_G * 50 + getRandomNumber(-50, 150), 100, m_G, getRandomNumber(100, 500), SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, getRandomNumber(0,2)*counter_clockwise));
   //planets.push_back(new Planet(BARREN_ROCK, 271, 100, G, 600, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 0));
   //std::cout << planets[2] << "\n";
   //planets.push_back(new Planet(BARREN_ROCK, 271, 100, G, 700, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, 1000, renderer, 1));
@@ -100,8 +101,8 @@ void Game::newSystem(double g_x, double g_y) {
     assert(planet->m_srcrect && "failed to reset a planet");
   }
 
-	//reset player based on planet movement
-  int starting_velocity{static_cast<int>(m_G)*getRandomNumber(1, 3)};
+	//reset player based on planet mogevement
+  int starting_velocity{static_cast<int>(m_G)*getRandomNumber(1, 2)};
   if(counter_clockwise)
     player->resetValues(1360, 590, 0, starting_velocity);
   else
@@ -118,6 +119,9 @@ void Game::newSystem(double g_x, double g_y) {
 
   //create timer
   timer = new Timer(28, starting_velocity*2, "/usr/share/fonts/TTF/FiraCode-Medium.ttf", renderer);
+  std::cout << "velocity: " << starting_velocity << "\n";
+  for(int i{0}; i<10; i++)
+    std::cout << getRandomNumber(1, 2) << "\n";
 }
 
 void Game::update(bool& running) {

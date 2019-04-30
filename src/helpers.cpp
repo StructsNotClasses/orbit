@@ -86,16 +86,16 @@ double* gravitationalAcceleration(double x1, double y1, double x2, double y2, do
 	double angle{0};
 	switch(quadrant) {
 		case 1:
-			angle=(atan((x2-x1)/(y1-y2))); 
+			angle=(atan((x2-x1)/(y1-y2)));
 			return new double[2] {-1*(sin(angle)*force),cos(angle)*force};
 		case 2:
-			angle=(atan((y2-y1)/(x2-x1))); 
+			angle=(atan((y2-y1)/(x2-x1)));
 			return new double[2] {-1*(cos(angle)*force),-1*(sin(angle)*force)};
 		case 3:
-			angle=(atan((x2-x1)/(y1-y2))); 
+			angle=(atan((x2-x1)/(y1-y2)));
 			return new double[2] {sin(angle)*force,-1*(cos(angle)*force)};
 		case 4:
-			angle=(atan((y1-y2)/(x1-x2))); 
+			angle=(atan((y1-y2)/(x1-x2)));
 			return new double[2] {cos(angle)*force,sin(angle)*force};
 		default:
 			return 0;
@@ -112,5 +112,7 @@ int lengthOfInteger(int intput) {
 }
 
 int getRandomNumber(int min, int max) {
-  return rand() % ((min + max)?(min+max):1);
+  int returnval = rand() % ((min + max)?(min+max):1);
+  if(returnval == 0) return min;
+  else return returnval;
 }

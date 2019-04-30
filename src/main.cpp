@@ -15,6 +15,9 @@ int main(int argc, char* args[]) {
 	Game* main = new Game();
 
 	assert(main->init(0,0,4) && "Initialization Failed");
+  bool tmp{1};
+  main->update(tmp);
+  main->newSystem();
 
 	//read input and change values based on it
 	SDL_Event event;

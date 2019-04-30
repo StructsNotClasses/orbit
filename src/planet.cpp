@@ -29,7 +29,7 @@ Planet::Planet(planetType type, const int& angle_o, const double& mass, double g
     m_v_x *= -1;
     m_v_y *= -1;
   }
-  assert(fileFromType(type) && "eyet");
+  assert(fileFromType(type) && "");
   m_srcrect->w = 9;
   m_srcrect->h = 9;
   m_srcrect->x = 12;
